@@ -31,14 +31,31 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Cost_Function.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Cost_Function.h" />
 		<Unit filename="Lite_Matrix.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Lite_Matrix.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="Reference_Points.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="Reference_Points.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="nsga3.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="nsga3.h">
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Extensions>
 			<code_completion />

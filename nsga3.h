@@ -29,6 +29,7 @@ typedef struct individual{
 }individualBox,*individualPtr;
 
 const static int nVar = 5;    // Number of Decision Variables
+const static int nObj = 2;    //Number of Objective Functions
 const static float VarMin = -1.0; //Lower Bound of Variables
 const static float VarMax =  1.0; //Upper Bound of Variables
 
@@ -38,17 +39,16 @@ const static int MaxIt = 50; //Maximum Number of Iterations
 const static int nPop = 80; //Population Size
 
 const static float pCrossover = 0.5; //Crossover Percentage
-const int nCrossover = 2*round_Num(pCrossover*nPop/2); //Number of Parnets (Offsprings)
+int nCrossover; //Number of Parnets (Offsprings)
 
 const static float pMutation = 0.5; //Mutation Percentage
-const int nMutation round_Num(pMutation*nPop);////Number of Mutants
+int nMutation;//Number of Mutants
 const static float mu = 0.02; //Mutation Rate
-const float sigma = 0.1*(VarMax-VarMin); // Mutation Step Size
+float sigma; // Mutation Step Size
 
 
-% Number of Objective Functions
-nObj = numel(CostFunction(unifrnd(VarMin, VarMax, 1, nVar)));
+void params_initalize();
 
-Zr = GenerateReferencePoints(nObj, nDivision);
+//Zr = GenerateReferencePoints(nObj, nDivision);
 
 #endif // NSGA3_H_INCLUDED

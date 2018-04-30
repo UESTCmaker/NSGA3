@@ -21,8 +21,8 @@ int round_Num(float num){
 //限定范围的随机数生成器
 float random_Num(float min,float max){
 	float randnum;
-	float interval= max-min+1.0;
-	randnum=fmodf((float)rand(),interval)+(float)min;
+	float interval= max-min+0.99999;
+	randnum=fmodf((float)rand(),interval)+min+0.00001;
 	return randnum;
 }
 
@@ -67,6 +67,21 @@ Matrix ones_Matrix(int row, int col){
 		*(M1.Box+i)=(float*)malloc(sizeof(float)*col);
 		for(j=0;j<col;j++){
 			*(*(M1.Box+i)+j)=1.0;
+		}
+	}
+	return M1;
+}
+
+Matrix somes_Matrix(float num, int row, int col){
+    Matrix M1;
+	int i,j;
+	M1.Box = (float**)malloc(sizeof(float*)*row);
+	M1.col=col;
+	M1.row=row;
+	for(i=0;i<row;i++){
+		*(M1.Box+i)=(float*)malloc(sizeof(float)*col);
+		for(j=0;j<col;j++){
+			*(*(M1.Box+i)+j)=num;
 		}
 	}
 	return M1;

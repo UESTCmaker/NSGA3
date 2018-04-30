@@ -1,18 +1,33 @@
 # depslib dependency file v1.0
-1524825261 source:d:\biyesheji\nsga3\nsga3\main.c
+1525081196 source:d:\biyesheji\nsga3\nsga3\main.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
 	<math.h>
+	"problem.h"
 	"Lite_Matrix.h"
+	"nsga3.h"
 
-1524825827 d:\biyesheji\nsga3\nsga3\lite_matrix.h
+1525075886 d:\biyesheji\nsga3\nsga3\lite_matrix.h
 
-1524826181 source:d:\biyesheji\nsga3\nsga3\lite_matrix.c
+1525077191 source:d:\biyesheji\nsga3\nsga3\lite_matrix.c
 	<stdio.h>
 	<malloc.h>
 	<stdlib.h>
 	<math.h>
 	<time.h>
+	"Lite_Matrix.h"
+
+1525079318 source:d:\biyesheji\nsga3\nsga3\nsga3.c
+	<stdio.h>
+	"nsga3.h"
+
+1525079607 d:\biyesheji\nsga3\nsga3\nsga3.h
+	"Lite_Matrix.h"
+
+1525080573 d:\biyesheji\nsga3\nsga3\problem.h
+	"Lite_Matrix.h"
+
+1525080070 source:d:\biyesheji\nsga3\nsga3\problem.h
 	"Lite_Matrix.h"
 

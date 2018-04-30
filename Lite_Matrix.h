@@ -22,6 +22,7 @@ Matrix get_min_Matrix(Matrix a, Matrix b);
 Matrix zeros_Matrix(int row, int col);
 Matrix ones_Matrix(int row, int col);
 Matrix infinity_Matrix(int row, int col);
+Matrix somes_Matrix(float num, int row, int col);
 Matrix random_Matrix(float VarMin, float VarMax, int row, int col);
 
 Matrix pow_array(Matrix a,int times);
