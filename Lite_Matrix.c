@@ -19,10 +19,12 @@ int round_Num(float num){
 }
 
 //限定范围的随机数生成器
-float random_Num(float min,float max){
+float random_Num(float maxNum,float minNum){
 	float randnum;
-	float interval= max-min+0.99999;
-	randnum=fmodf((float)rand(),interval)+min+0.00001;
+	float interval= maxNum-minNum+0.99999;
+	do{
+        randnum=fmodf((float)rand(),interval)+minNum+0.00001;
+	}while(randnum>maxNum || randnum<minNum);
 	return randnum;
 }
 

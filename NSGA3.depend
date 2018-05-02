@@ -1,16 +1,17 @@
 # depslib dependency file v1.0
-1525081196 source:d:\biyesheji\nsga3\nsga3\main.c
+1525250726 source:d:\biyesheji\nsga3\nsga3\main.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
 	<math.h>
-	"problem.h"
+	"Cost_Function.h"
+	"Reference_Points.h"
 	"Lite_Matrix.h"
 	"nsga3.h"
 
-1525075886 d:\biyesheji\nsga3\nsga3\lite_matrix.h
+1525246791 d:\biyesheji\nsga3\nsga3\lite_matrix.h
 
-1525077191 source:d:\biyesheji\nsga3\nsga3\lite_matrix.c
+1525249861 source:d:\biyesheji\nsga3\nsga3\lite_matrix.c
 	<stdio.h>
 	<malloc.h>
 	<stdlib.h>
@@ -18,11 +19,14 @@
 	<time.h>
 	"Lite_Matrix.h"
 
-1525079318 source:d:\biyesheji\nsga3\nsga3\nsga3.c
+1525250970 source:d:\biyesheji\nsga3\nsga3\nsga3.c
 	<stdio.h>
+	<malloc.h>
+	"Cost_Function.h"
+	"Reference_Points.h"
 	"nsga3.h"
 
-1525079607 d:\biyesheji\nsga3\nsga3\nsga3.h
+1525250343 d:\biyesheji\nsga3\nsga3\nsga3.h
 	"Lite_Matrix.h"
 
 1525080573 d:\biyesheji\nsga3\nsga3\problem.h
@@ -30,4 +34,23 @@
 
 1525080070 source:d:\biyesheji\nsga3\nsga3\problem.h
 	"Lite_Matrix.h"
+
+1525081473 source:d:\biyesheji\nsga3\nsga3\cost_function.c
+	<stdio.h>
+	<malloc.h>
+	<math.h>
+	"Cost_Function.h"
+	"Lite_Matrix.h"
+
+1525080573 d:\biyesheji\nsga3\nsga3\cost_function.h
+	"Lite_Matrix.h"
+
+1525149105 d:\biyesheji\nsga3\nsga3\reference_points.h
+	"Lite_Matrix.h"
+
+1525248407 source:d:\biyesheji\nsga3\nsga3\reference_points.c
+	<stdio.h>
+	<math.h>
+	"Reference_Points.h"
+	"nsga3.h"
 

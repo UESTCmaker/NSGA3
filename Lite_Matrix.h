@@ -9,7 +9,7 @@ typedef struct Matrix{
 
 int round_Num(float num);
 int element_Num(Matrix M1);
-float random_Num(float min,float max);
+float random_Num(float maxNum,float minNum);
 
 Matrix* get_max_col_Matrix(Matrix a);
 Matrix* get_min_col_Matrix(Matrix a);

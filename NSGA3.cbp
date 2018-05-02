@@ -39,14 +39,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Lite_Matrix.h">
-			<Option target="&lt;{~None~}&gt;" />
+			<Option target="Debug" />
 		</Unit>
 		<Unit filename="Reference_Points.c">
 			<Option compilerVar="CC" />
-			<Option target="&lt;{~None~}&gt;" />
+			<Option target="Debug" />
 		</Unit>
 		<Unit filename="Reference_Points.h">
-			<Option target="&lt;{~None~}&gt;" />
+			<Option target="Debug" />
 		</Unit>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
@@ -55,7 +55,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="nsga3.h">
-			<Option target="&lt;{~None~}&gt;" />
+			<Option target="Debug" />
 		</Unit>
 		<Extensions>
 			<code_completion />
