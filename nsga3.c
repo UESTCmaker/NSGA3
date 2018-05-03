@@ -7,7 +7,7 @@
 void params_initalize(){
     int i;
     input.nVar = 5;
-    input.nObj = 3;
+    input.nObj = 2;
     input.VarMin =(float*)malloc(sizeof(float)*input.nVar);
     input.VarMax =(float*)malloc(sizeof(float)*input.nVar);
     for(i=0;i<input.nVar;i++){
@@ -18,7 +18,7 @@ void params_initalize(){
     input.nDivision = 10;
 
     input.MaxIt = 50;
-    input.nPop = 80;
+    input.nPop = 10;
     input.pCrossover = 0.5;
     input.nCrossover = 2*round_Num(input.pCrossover*input.nPop/2);
     input.pMutation = 0.5;

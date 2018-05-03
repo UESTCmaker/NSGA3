@@ -48,6 +48,13 @@
 		<Unit filename="Reference_Points.h">
 			<Option target="Debug" />
 		</Unit>
+		<Unit filename="Sort_Population.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Sort_Population.h">
+			<Option target="Debug" />
+		</Unit>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
