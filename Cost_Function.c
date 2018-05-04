@@ -4,7 +4,7 @@
 #include "Cost_Function.h"
 #include "Lite_Matrix.h"
 
-Matrix cost_Function(Matrix a){
+Matrix Cost_Function(Matrix a){
      int n = element_Num(a);
      Matrix ones = ones_Matrix(a.row,a.col);
      Matrix temp1 = sum_row_Matrix(pow_array(divide_array(minus_Matrix(a,ones),somes_Matrix(sqrt(n),a.row,a.col)),2));

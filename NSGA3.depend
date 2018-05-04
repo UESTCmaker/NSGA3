@@ -20,7 +20,7 @@
 	<time.h>
 	"Lite_Matrix.h"
 
-1525318902 source:d:\biyesheji\nsga3\nsga3\nsga3.c
+1525401804 source:d:\biyesheji\nsga3\nsga3\nsga3.c
 	<stdio.h>
 	<malloc.h>
 	"Cost_Function.h"
@@ -36,14 +36,14 @@
 1525080070 source:d:\biyesheji\nsga3\nsga3\problem.h
 	"Lite_Matrix.h"
 
-1525319075 source:d:\biyesheji\nsga3\nsga3\cost_function.c
+1525400632 source:d:\biyesheji\nsga3\nsga3\cost_function.c
 	<stdio.h>
 	<malloc.h>
 	<math.h>
 	"Cost_Function.h"
 	"Lite_Matrix.h"
 
-1525080573 d:\biyesheji\nsga3\nsga3\cost_function.h
+1525398595 d:\biyesheji\nsga3\nsga3\cost_function.h
 	"Lite_Matrix.h"
 
 1525149105 d:\biyesheji\nsga3\nsga3\reference_points.h
@@ -55,10 +55,10 @@
 	"Reference_Points.h"
 	"nsga3.h"
 
-1525257686 d:\biyesheji\nsga3\nsga3\sort_population.h
+1525400257 d:\biyesheji\nsga3\nsga3\sort_population.h
 	"nsga3.h"
 
-1525319419 source:d:\biyesheji\nsga3\nsga3\sort_population.c
+1525403836 source:d:\biyesheji\nsga3\nsga3\sort_population.c
 	<stdio.h>
 	<ctype.h>
 	"Sort_Population.h"

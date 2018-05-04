@@ -4,6 +4,7 @@
 #include "nsga3.h"
 
 void Normalize_Population(individualPtr *pop);
+Matrix Find_HyperplaneIntercepts();
 void Perform_Scalarizing(Matrix fp);
 Matrix Scalarizing_Vector(int nObj, int j);
 void Update_IdealPoint(individualPtr pop);

@@ -18,7 +18,7 @@ void params_initalize(){
     input.nDivision = 10;
 
     input.MaxIt = 50;
-    input.nPop = 10;
+    input.nPop = 20;
     input.pCrossover = 0.5;
     input.nCrossover = 2*round_Num(input.pCrossover*input.nPop/2);
     input.pMutation = 0.5;
@@ -41,7 +41,7 @@ void population_initalize(individualPtr *pop){
         for(j=0;j<input.nVar;j++){
             *(*(p->Position.Box)+j) = random_Num(*(input.VarMax+j),*(input.VarMin+j));
         }
-        p->Cost = cost_Function(p->Position);
+        p->Cost = Cost_Function(p->Position);
         p++;
     }
 }

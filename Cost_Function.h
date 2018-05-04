@@ -3,6 +3,6 @@
 
 #include "Lite_Matrix.h"
 
-Matrix cost_Function(Matrix a);
+Matrix Cost_Function(Matrix a);
 
 #endif // PROBLEM_H_INCLUDED
