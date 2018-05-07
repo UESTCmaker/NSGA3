@@ -35,6 +35,13 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Cost_Function.h" />
+		<Unit filename="Lite_List.c">
+			<Option compilerVar="CC" />
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="Lite_List.h">
+			<Option target="Debug" />
+		</Unit>
 		<Unit filename="Lite_Matrix.c">
 			<Option compilerVar="CC" />
 		</Unit>

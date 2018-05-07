@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include "Sort_Population.h"
+#include "Lite_List.h"
 #include "nsga3.h"
 
 #define epsilon 0.001
@@ -23,15 +24,11 @@ void Normalize_Population(individualPtr *pop){
         }
         p++;
     }
-    //print_Matrix(fp);
     fp = minus_Matrix(fp,repmat_Matrix(param.zmin,1,input.nPop));
-    //print_Matrix(fp);
     Perform_Scalarizing(fp);
     a = Find_HyperplaneIntercepts();
-    print_Matrix(a);
 
     b = divide_array(fp,repmat_Matrix(a,1,input.nPop));
-    print_Matrix(b);
     p = *pop;
     for(i=0;i<input.nPop;i++){
         p->NormalizedCost = get_col_Matrix(b,i+1);
@@ -42,7 +39,6 @@ void Normalize_Population(individualPtr *pop){
 Matrix Find_HyperplaneIntercepts(){
     Matrix a,w;
     w = divide_Matrix(ones_Matrix(1,param.zmax.col),param.zmax);
-    print_Matrix(w);
     a = trans_Matrix(divide_array(ones_Matrix(w.row,w.col),w));
     return a;
 }
@@ -82,8 +78,6 @@ void Perform_Scalarizing(Matrix fp){
     }
     param.zmax = zmax;
     param.smin = smin;
-    print_Matrix(param.zmax);
-    print_Matrix(param.smin);
 }
 
 Matrix Scalarizing_Vector(int nObj, int j){
@@ -105,11 +99,39 @@ void Update_IdealPoint(individualPtr pop){
 }
 
 
-/*
-F NonDominatedSorting(){
 
+void NonDominatedSorting(individualPtr *pop){
+    int i,j;
+    individualPtr p,q,m = *pop;
+    ListPtr *F;
+    for(i=0;i<input.nPop;i++){
+        m->DominatedCount=0;
+        m++;
+    }
+    for(i=0;i<input.nPop;i++){
+        for(j=0;j<input.nPop;j++){
+            p = m+i;
+            q = m+j;
+            if(dominates_Matrix(p->Cost,q->Cost)){
+                add_Data(&p->DominationSet,j);
+                q->DominatedCount++;
+            }
+            if(dominates_Matrix(q->Cost,p->Cost)){
+                add_Data(&q->DominationSet,i);
+                p->DominatedCount++;
+            }
+        }
+        if(p->DominatedCount==0){
+            //F
+        }
+    }
 }
-*/
+
+int dominates_Matrix(Matrix a,Matrix b){
+    return all_flag_Matrix(a,b,-10) && any_flag_Matrix(a,b,-1);
+}
+
+
 /*
 AssociateToReferencePoint(){
 

@@ -1,6 +1,7 @@
 #ifndef NSGA3_H_INCLUDED
 #define NSGA3_H_INCLUDED
 
+#include "Lite_List.h"
 #include "Lite_Matrix.h"
 
 typedef struct params{
@@ -34,9 +35,9 @@ typedef struct inputs{
 typedef struct individual{
     Matrix Position;
     Matrix Cost;
-    Matrix Rank;
-    Matrix DominationSet;
-    Matrix DominatedCount;
+    int Rank;
+    ListPtr DominationSet;
+    int DominatedCount;
     Matrix NormalizedCost;
     Matrix AssociatedRef;
     Matrix DistanceToAssociatedRef;

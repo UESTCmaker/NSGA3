@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1525255204 source:d:\biyesheji\nsga3\nsga3\main.c
+1525663126 source:d:\biyesheji\nsga3\nsga3\main.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
@@ -8,6 +8,7 @@
 	"Reference_Points.h"
 	"Sort_Population.h"
 	"Lite_Matrix.h"
+	"Lite_List.h"
 	"nsga3.h"
 
 1525246791 d:\biyesheji\nsga3\nsga3\lite_matrix.h
@@ -27,7 +28,8 @@
 	"Reference_Points.h"
 	"nsga3.h"
 
-1525250343 d:\biyesheji\nsga3\nsga3\nsga3.h
+1525665052 d:\biyesheji\nsga3\nsga3\nsga3.h
+	"Lite_List.h"
 	"Lite_Matrix.h"
 
 1525080573 d:\biyesheji\nsga3\nsga3\problem.h
@@ -55,12 +57,19 @@
 	"Reference_Points.h"
 	"nsga3.h"
 
-1525400257 d:\biyesheji\nsga3\nsga3\sort_population.h
+1525665160 d:\biyesheji\nsga3\nsga3\sort_population.h
 	"nsga3.h"
 
-1525403836 source:d:\biyesheji\nsga3\nsga3\sort_population.c
+1525661414 source:d:\biyesheji\nsga3\nsga3\sort_population.c
 	<stdio.h>
 	<ctype.h>
 	"Sort_Population.h"
 	"nsga3.h"
+
+1525663075 source:d:\biyesheji\nsga3\nsga3\lite_list.c
+	<stdio.h>
+	<malloc.h>
+	"Lite_List.h"
+
+1525660516 d:\biyesheji\nsga3\nsga3\lite_list.h
 
