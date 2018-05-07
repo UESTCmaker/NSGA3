@@ -12,7 +12,7 @@ Matrix Cost_Function(Matrix a){
 
     float z1=1-exp(- **temp1.Box);
     float z2=1+exp(- **temp2.Box);
-    float z3=2-exp(- **temp2.Box);
+    float z3=2-exp(**temp2.Box+**temp1.Box);
 
     Matrix z;
     int i;

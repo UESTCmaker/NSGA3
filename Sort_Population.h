@@ -8,7 +8,7 @@ void Perform_Scalarizing(Matrix fp);
 Matrix Scalarizing_Vector(int nObj, int j);
 void Update_IdealPoint(individualPtr pop);
 void Normalize_Population(individualPtr *pop);
-void NonDominatedSorting(individualPtr *pop);
+FListPtr NonDominatedSorting(individualPtr *pop);
 int dominates_Matrix(Matrix a,Matrix b);
 
 #endif // SORT_POPULATION_H_INCLUDED

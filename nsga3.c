@@ -18,7 +18,7 @@ void params_initalize(){
     input.nDivision = 10;
 
     input.MaxIt = 50;
-    input.nPop = 20;
+    input.nPop = 60;
     input.pCrossover = 0.5;
     input.nCrossover = 2*round_Num(input.pCrossover*input.nPop/2);
     input.pMutation = 0.5;

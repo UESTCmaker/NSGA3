@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <malloc.h>
 #include <ctype.h>
 #include "Sort_Population.h"
 #include "Lite_List.h"
@@ -100,16 +101,21 @@ void Update_IdealPoint(individualPtr pop){
 
 
 
-void NonDominatedSorting(individualPtr *pop){
-    int i,j;
+FListPtr NonDominatedSorting(individualPtr *pop){
+    int i,j,k;
     individualPtr p,q,m = *pop;
-    ListPtr *F;
+    ListPtr a,b;
+    FListPtr Q,R,F = (FListPtr)malloc(sizeof(FListBox));
+    F->dataList = NULL;
+    F->pNext = NULL;
+    F->Rank = 1;
     for(i=0;i<input.nPop;i++){
         m->DominatedCount=0;
         m++;
     }
+    m = *pop;
     for(i=0;i<input.nPop;i++){
-        for(j=0;j<input.nPop;j++){
+        for(j=i+1;j<input.nPop;j++){
             p = m+i;
             q = m+j;
             if(dominates_Matrix(p->Cost,q->Cost)){
@@ -122,9 +128,39 @@ void NonDominatedSorting(individualPtr *pop){
             }
         }
         if(p->DominatedCount==0){
-            //F
+            add_Data( &F->dataList, i);
+            p->Rank=1;
         }
     }
+    k=1;
+    while(1){
+        Q = (FListPtr)malloc(sizeof(FListBox));
+        Q->dataList = NULL;
+        Q->pNext = NULL;
+        Q->Rank = k+1;
+        R = F;
+        while(R->Rank!=k)R=R->pNext;
+        a = R->dataList;
+        while(a){
+            p = m+(a->data);
+            b=p->DominationSet;
+            while(b){
+                q = m+(b->data);
+                q->DominatedCount--;
+                if(q->DominatedCount==0){
+                    add_Data( &Q->dataList, b->data);
+                    q->Rank=k+1;
+                }
+                b = b->pNext;
+            }
+            a=a->pNext;
+        }
+        if(Q->dataList==NULL)break;
+
+        R->pNext = Q;
+        k++;
+    }
+    return F;
 }
 
 int dominates_Matrix(Matrix a,Matrix b){
