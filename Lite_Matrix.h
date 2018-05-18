@@ -1,6 +1,9 @@
 #ifndef LITE_MATRIX_H_INCLUDED
 #define LITE_MATRIX_H_INCLUDED
 
+#define MIN -3.40E+38
+#define MAX +3.40E+38
+
 typedef struct Matrix{
 	float** Box;
 	int row;
@@ -25,8 +28,9 @@ Matrix infinity_Matrix(int row, int col);
 Matrix somes_Matrix(float num, int row, int col);
 Matrix random_Matrix(float VarMin, float VarMax, int row, int col);
 
-Matrix pow_array(Matrix a,int times);
-Matrix divide_array(Matrix a,Matrix b);
+Matrix pow_Array(Matrix a,int times);
+Matrix divide_Array(Matrix a,Matrix b);
+Matrix multply_Array(Matrix a,Matrix b);
 
 int all_flag_Matrix(Matrix a, Matrix b, int flag);
 int any_flag_Matrix(Matrix a, Matrix b, int flag);

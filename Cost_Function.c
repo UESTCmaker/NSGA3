@@ -7,18 +7,18 @@
 Matrix Cost_Function(Matrix a){
      int n = element_Num(a);
      Matrix ones = ones_Matrix(a.row,a.col);
-     Matrix temp1 = sum_row_Matrix(pow_array(divide_array(minus_Matrix(a,ones),somes_Matrix(sqrt(n),a.row,a.col)),2));
-     Matrix temp2 = sum_row_Matrix(pow_array(divide_array(plus_Matrix(a,ones),somes_Matrix(sqrt(n),a.row,a.col)),2));
+     Matrix temp1 = sum_row_Matrix(pow_Array(divide_Array(minus_Matrix(a,ones),somes_Matrix(sqrt(n),a.row,a.col)),2));
+     Matrix temp2 = sum_row_Matrix(pow_Array(divide_Array(plus_Matrix(a,ones),somes_Matrix(sqrt(n),a.row,a.col)),2));
 
     float z1=1-exp(- **temp1.Box);
     float z2=1+exp(- **temp2.Box);
-    float z3=2-exp(**temp2.Box+**temp1.Box);
+    //float z3=2-exp(**temp2.Box+**temp1.Box);
 
     Matrix z;
     int i;
 
     z.col=1;
-    z.row=3;
+    z.row=2;
     z.Box = (float**)malloc(sizeof(float*)*z.row);
     for(i=0;i<z.row;i++){
         *(z.Box+i)=(float*)malloc(sizeof(float)*z.col);
@@ -26,7 +26,7 @@ Matrix Cost_Function(Matrix a){
 
     *(*(z.Box+0)+z.col-1)=z1;
     *(*(z.Box+1)+z.col-1)=z2;
-    *(*(z.Box+2)+z.col-1)=z3;
+    //*(*(z.Box+2)+z.col-1)=z3;
 
     return z;
 }

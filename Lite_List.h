@@ -12,7 +12,9 @@ typedef struct FList{
     struct FList* pNext;
 }FListBox,*FListPtr;
 
+int number_List(ListPtr p);
 void add_Data(ListPtr* l, int data);
+void add_List(ListPtr* l, ListPtr newl);
 void print_List(ListPtr p);
 
 #endif // LITE_LIST_H_INCLUDED

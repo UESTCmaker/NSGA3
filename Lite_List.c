@@ -18,13 +18,27 @@ void add_Data(ListPtr* head, int data){
     }
 }
 
-//void add_List(ListPtr* list1, ListPtr* list2){
+void add_List(ListPtr* head, ListPtr newl){
+    while(newl){
+            printf("newl->data: %d\n",newl->data);
+            add_Data(head,newl->data);
+            newl = newl->pNext;
+        }
+}
 
-//}
+int number_List(ListPtr p){
+    int number=0;
+    while(p){
+        number++;
+        p=p->pNext;
+    }
+    return number;
+}
 
 void print_List(ListPtr p){
     while(p){
         printf("%d\t",p->data);
         p=p->pNext;
     }
+    printf("\n");
 }

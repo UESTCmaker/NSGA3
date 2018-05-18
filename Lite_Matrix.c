@@ -5,9 +5,6 @@
 #include <time.h>
 #include "Lite_Matrix.h"
 
-#define MIN -3.40E+38
-#define MAX +3.40E+38
-
 //浮点数四舍五入运算
 int round_Num(float num){
     if( (ceil(num)-num) <= (num-floor(num)) ){
@@ -18,7 +15,7 @@ int round_Num(float num){
     }
 }
 
-//限定范围的随机数生成器
+//限定范围的随机浮点数生成器
 float random_Num(float maxNum,float minNum){
 	float randnum;
 	float interval= maxNum-minNum+0.99999;
@@ -27,6 +24,7 @@ float random_Num(float maxNum,float minNum){
 	}while(randnum>maxNum || randnum<minNum);
 	return randnum;
 }
+
 
 //随机初始化矩阵
 Matrix random_Matrix(float VarMin, float VarMax, int row, int col){
@@ -164,7 +162,7 @@ int all_flag_Matrix(Matrix a, Matrix b, int flag){
         return result;
     }
     else{
-        perror("wrong matrix compare operation:");
+        printf("Error: wrong matrix compare operation.\n");
         exit(-1);
     }
 }
@@ -211,7 +209,7 @@ int any_flag_Matrix(Matrix a, Matrix b, int flag){
         return result;
     }
     else{
-        perror("wrong matrix compare operation.\n");
+        printf("Error: wrong matrix compare operation.\n");
         exit(-1);
     }
 }
@@ -238,7 +236,7 @@ Matrix* get_max_col_Matrix(Matrix a){
             }
         }
         *(*(b[0].Box+i))=max;
-        *(*(b[1].Box+i))=number;
+        *(*(b[1].Box+i))=number+1;
     }
     return b;
 }
@@ -265,7 +263,7 @@ Matrix* get_min_col_Matrix(Matrix a){
             }
         }
         *(*(b[0].Box+i))=min;
-        *(*(b[1].Box+i))=number;
+        *(*(b[1].Box+i))=number+1;
     }
     return b;
 }
@@ -290,7 +288,7 @@ Matrix* get_max_row_Matrix(Matrix a){
             }
         }
         *(*(b[0].Box)+j)=max;
-        *(*(b[1].Box)+j)=number;
+        *(*(b[1].Box)+j)=number+1;
     }
     return b;
 }
@@ -315,7 +313,7 @@ Matrix* get_min_row_Matrix(Matrix a){
             }
         }
         *(*(b[0].Box)+j)=min;
-        *(*(b[1].Box)+j)=number;
+        *(*(b[1].Box)+j)=number+1;
     }
     return b;
 }
@@ -336,7 +334,7 @@ Matrix get_max_Matrix(Matrix a, Matrix b){
         return c;
     }
     else{
-        perror("wrong matrix get operation.\n");
+        printf("Error: wrong matrix max get operation.\n");
         exit(-1);
     }
 }
@@ -357,7 +355,7 @@ Matrix get_min_Matrix(Matrix a, Matrix b){
         return c;
     }
     else{
-        perror("wrong matrix get operation.\n");
+        printf("Error: wrong matrix min get operation.\n");
         exit(-1);
     }
 }
@@ -395,7 +393,7 @@ Matrix get_col_Matrix(Matrix a, int col){
         return b;
     }
     else{
-        perror("wrong matrix column get operation.\n");
+        printf("Error: wrong matrix column get operation.\n");
         exit(-1);
     }
 }
@@ -417,7 +415,7 @@ Matrix get_row_Matrix(Matrix a, int row){
         return b;
     }
     else{
-        perror("wrong matrix row get operation.\n");
+        printf("Error: wrong matrix row get operation.\n");
         exit(-1);
     }
 }
@@ -489,7 +487,7 @@ float norm_Matrix(Matrix a){
 }
 
 //数组乘方运算
-Matrix pow_array(Matrix a,int times){
+Matrix pow_Array(Matrix a,int times){
     Matrix b;
     int i,j;
     b.col=a.col;
@@ -504,8 +502,24 @@ Matrix pow_array(Matrix a,int times){
     return b;
 }
 
+//数组乘法运算
+Matrix multply_Array(Matrix a,Matrix b){
+    Matrix c;
+    int i,j;
+    c.col=b.col;
+    c.row=b.row;
+    c.Box=(float**)malloc(sizeof(float*)*c.row);
+    for(i=0;i<c.row;i++){
+        *(c.Box+i)=(float*)malloc(sizeof(float)*c.col);
+        for(j=0;j<c.col;j++){
+            *(*(c.Box+i)+j)=*(*(a.Box+i)+j) * *(*(b.Box+i)+j);
+        }
+    }
+    return c;
+}
+
 //数组除法运算
-Matrix divide_array(Matrix a,Matrix b){
+Matrix divide_Array(Matrix a,Matrix b){
     Matrix c;
     int i,j;
     if(a.col==b.col && a.row==b.row){
@@ -520,7 +534,7 @@ Matrix divide_array(Matrix a,Matrix b){
         }
     }
     else{
-        perror("wrong array divide operation:");
+        printf("Error: wrong array divide operation.\n");
         exit(-1);
     }
     return c;
@@ -541,7 +555,7 @@ Matrix pow_Matrix(Matrix a,int times){
 Matrix inverse_Matrix(Matrix a){
     Matrix b,c;
     int i,j,k;
-    float times;
+    float times1,times2;
     float* temp=NULL;
     b.col=a.col*2;
     b.row=a.row;
@@ -565,7 +579,7 @@ Matrix inverse_Matrix(Matrix a){
     //找到不为零的对角元
     for(i=0;i<b.row;i++){
         if( *(*(b.Box+i)+i)==0.0 ){
-            for(j=i;j<b.row;j++){
+            for(j=i+1;j<b.row;j++){
                 if( *(*(b.Box+j)+i)!=0.0 ){
                     temp = *(b.Box+j);
                     *(b.Box+j) = *(b.Box+i);
@@ -574,7 +588,7 @@ Matrix inverse_Matrix(Matrix a){
                 }
             }
             if(j==b.row){
-                perror("wrong matrix inverse operation:");
+                printf("Error: wrong matrix inverse operation.\n");
                 exit(-1);
             }
         }
@@ -582,20 +596,26 @@ Matrix inverse_Matrix(Matrix a){
 
     //对角元单位化
     for(i=0;i<b.row;i++){
-
-        times = *(*(b.Box+i)+i);
-        for(j=0;j<b.col;j++){
-            *(*(b.Box+i)+j) /= times;
-        }
-
-        for(j=0;j<b.row;j++){
-            if(i!=j){
-                times= *(*(b.Box+j)+i);
-                for(k=i;k<b.col;k++){
-                    *(*(b.Box+j)+k)-= times * (*(*(b.Box+i)+k));
+        times1 = *(*(b.Box+i)+i);
+        if(times1!=0){
+            for(j=0;j<b.col;j++){
+                *(*(b.Box+i)+j) /= times1;
+            }
+            //print_Matrix(b);
+            for(j=0;j<b.row;j++){
+                times2= *(*(b.Box+j)+i);
+                if(i!=j && times2!=0){
+                    for(k=i;k<b.col;k++){
+                        *(*(b.Box+j)+k)-= times2 * (*(*(b.Box+i)+k));
+                    }
                 }
             }
         }
+        else{
+            printf("Error: wrong matrix inverse operation.\n");
+            exit(-1);
+        }
+        //print_Matrix(b);
     }
 
     c.col=a.col;
@@ -643,7 +663,7 @@ Matrix plus_Matrix(Matrix a, Matrix b){
 		}
 	}
 	else{
-		perror("wrong matrix plus operation:");
+        printf("Error: wrong matrix plus operation.\n");
 		exit(-1);
 	}
 	return result;
@@ -665,7 +685,7 @@ Matrix minus_Matrix(Matrix a, Matrix b){
 		}
 	}
 	else{
-		perror("wrong matrix minus operation:");
+        printf("Error: wrong matrix minus operation.\n");
 		exit(-1);
 	}
 	return result;
@@ -692,7 +712,7 @@ Matrix multply_Matrix(Matrix a, Matrix b){
 		}
 	}
 	else{
-		perror("wrong matrix multply operation:");
+        printf("Error: wrong matrix multply operation.\n");
 		exit(-1);
 	}
 	return result;

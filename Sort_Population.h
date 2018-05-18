@@ -6,9 +6,13 @@
 Matrix Find_HyperplaneIntercepts();
 void Perform_Scalarizing(Matrix fp);
 Matrix Scalarizing_Vector(int nObj, int j);
-void Update_IdealPoint(individualPtr pop);
+void Update_IdealPoint(individualPtr *pop);
+
+FListPtr Sort_Population(individualPtr *pop);
 void Normalize_Population(individualPtr *pop);
-FListPtr NonDominatedSorting(individualPtr *pop);
+FListPtr NonDominated_Sorting(individualPtr *pop);
 int dominates_Matrix(Matrix a,Matrix b);
+Matrix* Associate_ReferencePoint(individualPtr *pop);
+
 
 #endif // SORT_POPULATION_H_INCLUDED

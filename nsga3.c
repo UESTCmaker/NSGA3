@@ -11,14 +11,15 @@ void params_initalize(){
     input.VarMin =(float*)malloc(sizeof(float)*input.nVar);
     input.VarMax =(float*)malloc(sizeof(float)*input.nVar);
     for(i=0;i<input.nVar;i++){
-        *(input.VarMin+i)=-1.0;
-        *(input.VarMax+i)=1.0;
+        *(input.VarMin+i)=1.0;
+        *(input.VarMax+i)=5.0;
     }
 
     input.nDivision = 10;
 
     input.MaxIt = 50;
-    input.nPop = 60;
+    input.nPop_Old = 10;
+    input.nPop = input.nPop_Old;
     input.pCrossover = 0.5;
     input.nCrossover = 2*round_Num(input.pCrossover*input.nPop/2);
     input.pMutation = 0.5;
@@ -36,14 +37,60 @@ void population_initalize(individualPtr *pop){
     individualPtr p;
     *pop = (individualPtr)malloc(sizeof(individualBox)*input.nPop);
     p = *pop;
+    srand(time(NULL));
     for(i = 0;i<input.nPop;i++){
         p->Position = zeros_Matrix(1, input.nVar);
         for(j=0;j<input.nVar;j++){
             *(*(p->Position.Box)+j) = random_Num(*(input.VarMax+j),*(input.VarMin+j));
         }
         p->Cost = Cost_Function(p->Position);
+        print_Matrix(p->Cost);
         p++;
     }
 }
+
+
+void crossover_population(individualPtr *popc, individualPtr pop){
+    int k,i1,i2,nCross = input.nCrossover/2;
+    individualPtr pc,p,p1,p2;
+    Matrix alpha;
+    *popc = (individualPtr)malloc(sizeof(individualBox)*input.nCrossover);
+    pc = *popc;
+    p = pop;
+    srand(time(NULL));
+    for(k=0;k<nCross;k++){
+        i1 = rand() % input.nPop;
+        do{
+            i2 = rand() % input.nPop;
+        }while(i2 == i1);
+        p1 = p + i1;
+        p2 = p + i2;
+        alpha = random_Matrix(0.0,1.0,1,input.nVar);
+        pc->Position = plus_Matrix(multply_Array(alpha,p1->Position),multply_Array(minus_Matrix(ones_Matrix(alpha.row,alpha.col),alpha),p2->Position));
+        pc->Cost = Cost_Function(pc->Position);
+        pc++;
+        pc->Position = plus_Matrix(multply_Array(alpha,p2->Position),multply_Array(minus_Matrix(ones_Matrix(alpha.row,alpha.col),alpha),p1->Position));
+        pc->Cost = Cost_Function(pc->Position);
+    }
+}
+
+void mutation_population(individualPtr *popm, individualPtr pop){
+    int k,i;
+    individualPtr p;
+    *popm = (individualPtr)malloc(sizeof(individualBox)*input.nMutation);
+    for(k=0;k<input.nMutation;k++){
+        i = rand() % input.nPop;
+        p = pop + i;
+        popm.Position =
+    }
+}
+
+
+
+
+
+
+
+
 
 

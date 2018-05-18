@@ -21,6 +21,7 @@ typedef struct inputs{
     int nDivision; //Number of Reference Points
 
     int MaxIt; //Maximum Number of Iterations
+    int nPop_Old;
     int nPop; //Population Size
 
     float pCrossover; //Crossover Percentage
@@ -39,8 +40,8 @@ typedef struct individual{
     ListPtr DominationSet;
     int DominatedCount;
     Matrix NormalizedCost;
-    Matrix AssociatedRef;
-    Matrix DistanceToAssociatedRef;
+    int AssociatedRef;
+    float DistanceToAssociatedRef;
 }individualBox,*individualPtr;
 
 paramsBox param;
@@ -48,5 +49,7 @@ inputBox input;
 
 void params_initalize();
 void population_initalize(individualPtr *pop);
-
+void crossover_population(individualPtr *popc, individualPtr pop);
+void mutation_population(individualPtr *popm, individualPtr pop);
+individualPtr merge_population(individualPtr pop, individualPtr popc, individualPtr popm);
 #endif // NSGA3_H_INCLUDED
