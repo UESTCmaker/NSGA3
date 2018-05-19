@@ -85,9 +85,10 @@
 1525398596 c:\users\dream maker\documents\biyesheji\nsga3\nsga3\cost_function.h
 	"Lite_Matrix.h"
 
-1526438013 c:\users\dream maker\documents\biyesheji\nsga3\nsga3\lite_matrix.h
+1526721943 c:\users\dream maker\documents\biyesheji\nsga3\nsga3\lite_matrix.h
+	"Lite_List.h"
 
-1526615755 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\lite_matrix.c
+1526722469 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\lite_matrix.c
 	<stdio.h>
 	<malloc.h>
 	<stdlib.h>
@@ -95,7 +96,7 @@
 	<time.h>
 	"Lite_Matrix.h"
 
-1526612225 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\main.c
+1526653491 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\main.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
@@ -117,10 +118,12 @@
 	"Lite_List.h"
 	"Lite_Matrix.h"
 
-1525922524 c:\users\dream maker\documents\biyesheji\nsga3\nsga3\lite_list.h
+1526700718 c:\users\dream maker\documents\biyesheji\nsga3\nsga3\lite_list.h
 
-1526616263 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\nsga3.c
+1526717909 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\nsga3.c
 	<stdio.h>
+	<time.h>
+	<math.h>
 	<malloc.h>
 	"Cost_Function.h"
 	"Reference_Points.h"
@@ -132,12 +135,12 @@
 	"Reference_Points.h"
 	"nsga3.h"
 
-1526544029 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\lite_list.c
+1526653826 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\lite_list.c
 	<stdio.h>
 	<malloc.h>
 	"Lite_List.h"
 
-1526615931 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\sort_population.c
+1526721990 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\sort_population.c
 	<stdio.h>
 	<malloc.h>
 	<ctype.h>

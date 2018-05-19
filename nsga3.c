@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <time.h>
+#include <math.h>
 #include <malloc.h>
 #include "Cost_Function.h"
 #include "Reference_Points.h"
@@ -44,48 +46,80 @@ void population_initalize(individualPtr *pop){
             *(*(p->Position.Box)+j) = random_Num(*(input.VarMax+j),*(input.VarMin+j));
         }
         p->Cost = Cost_Function(p->Position);
-        print_Matrix(p->Cost);
+        p->DominationSet=NULL;
         p++;
     }
 }
 
 
 void crossover_population(individualPtr *popc, individualPtr pop){
-    int k,i1,i2,nCross = input.nCrossover/2;
+    int k,i1=-1,i2=-1,nCross = input.nCrossover/2;
     individualPtr pc,p,p1,p2;
     Matrix alpha;
     *popc = (individualPtr)malloc(sizeof(individualBox)*input.nCrossover);
     pc = *popc;
     p = pop;
     srand(time(NULL));
+    printf("begin crossover!!!\n");
     for(k=0;k<nCross;k++){
         i1 = rand() % input.nPop;
         do{
             i2 = rand() % input.nPop;
-        }while(i2 == i1);
+        }while(i1 == i2);
         p1 = p + i1;
         p2 = p + i2;
-        alpha = random_Matrix(0.0,1.0,1,input.nVar);
+        alpha = random_Matrix(1.0,0.0,1,input.nVar);
         pc->Position = plus_Matrix(multply_Array(alpha,p1->Position),multply_Array(minus_Matrix(ones_Matrix(alpha.row,alpha.col),alpha),p2->Position));
         pc->Cost = Cost_Function(pc->Position);
         pc++;
         pc->Position = plus_Matrix(multply_Array(alpha,p2->Position),multply_Array(minus_Matrix(ones_Matrix(alpha.row,alpha.col),alpha),p1->Position));
         pc->Cost = Cost_Function(pc->Position);
+        pc++;
     }
 }
 
 void mutation_population(individualPtr *popm, individualPtr pop){
-    int k,i;
-    individualPtr p;
+    int k,i,j,serial,nMu,flag[50]={0};
+    individualPtr p,pm;
+    nMu = (int)ceil(input.mu * input.nVar);
     *popm = (individualPtr)malloc(sizeof(individualBox)*input.nMutation);
+    pm = *popm;
+    printf("begin mutation!!!\n");
     for(k=0;k<input.nMutation;k++){
         i = rand() % input.nPop;
         p = pop + i;
-        popm.Position =
+        for(j=0;j<input.nVar;j++){
+            flag[j]=0;
+        }
+        pm->Position = repmat_Matrix(p->Position,1,1);
+        for(j=0;j<nMu;j++){
+            serial = rand() % input.nVar;
+            while(flag[serial]!=0){
+                serial = rand() % input.nVar;
+            }
+            flag[serial]=1;
+            *(*((pm->Position).Box)+serial) += input.sigma * (double)gaussrand();
+        }
+        pm->Cost = Cost_Function(pm->Position);
+        pm++;
     }
 }
 
-
+individualPtr merge_population(individualPtr pop, individualPtr popc, individualPtr popm){
+    individualPtr newpop,popAr[3]={pop,popc,popm};
+    int j,i,last=0,nNewPop = input.nPop + input.nCrossover + input.nMutation;
+    int num[3]={input.nPop,input.nCrossover,input.nMutation};
+    newpop = (individualPtr)malloc(sizeof(individualBox)*nNewPop);
+    printf("begin merge!!!\n");
+    for(j=0;j<3;j++){
+        for(i=0;i<num[j];i++){
+            (newpop+last+i)->Position = (popAr[j]+i)->Position;
+            (newpop+last+i)->Cost = (popAr[j]+i)->Cost;
+        }
+        last+=i;
+    }
+    return newpop;
+}
 
 
 

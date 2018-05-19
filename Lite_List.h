@@ -10,8 +10,10 @@ typedef struct FList{
     ListPtr dataList;
     int Rank;
     struct FList* pNext;
+    struct FList* pFront;
 }FListBox,*FListPtr;
 
+int find_List(ListPtr p, int num);
 int number_List(ListPtr p);
 void add_Data(ListPtr* l, int data);
 void add_List(ListPtr* l, ListPtr newl);

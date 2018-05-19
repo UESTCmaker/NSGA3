@@ -1,8 +1,11 @@
 #ifndef LITE_MATRIX_H_INCLUDED
 #define LITE_MATRIX_H_INCLUDED
 
+#include "Lite_List.h"
+
 #define MIN -3.40E+38
 #define MAX +3.40E+38
+#define PI 3.141592654
 
 typedef struct Matrix{
 	float** Box;
@@ -10,9 +13,12 @@ typedef struct Matrix{
 	int col;
 }Matrix,*MatrixPtr;
 
+double gaussrand();
 int round_Num(float num);
 int element_Num(Matrix M1);
 float random_Num(float maxNum,float minNum);
+
+ListPtr get_min_col_NumList(Matrix a);
 
 Matrix* get_max_col_Matrix(Matrix a);
 Matrix* get_min_col_Matrix(Matrix a);
@@ -26,7 +32,7 @@ Matrix zeros_Matrix(int row, int col);
 Matrix ones_Matrix(int row, int col);
 Matrix infinity_Matrix(int row, int col);
 Matrix somes_Matrix(float num, int row, int col);
-Matrix random_Matrix(float VarMin, float VarMax, int row, int col);
+Matrix random_Matrix(float VarMax, float VarMin, int row, int col);
 
 Matrix pow_Array(Matrix a,int times);
 Matrix divide_Array(Matrix a,Matrix b);

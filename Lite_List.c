@@ -20,10 +20,14 @@ void add_Data(ListPtr* head, int data){
 
 void add_List(ListPtr* head, ListPtr newl){
     while(newl){
-            printf("newl->data: %d\n",newl->data);
             add_Data(head,newl->data);
             newl = newl->pNext;
         }
+}
+
+int find_List(ListPtr p, int num){
+    while(--num)p=p->pNext;
+    return p->data;
 }
 
 int number_List(ListPtr p){

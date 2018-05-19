@@ -11,10 +11,15 @@
 
 int main(){
 
-    individualPtr pop=NULL;
+    individualPtr pop=NULL,popm=NULL,popc=NULL;
     FListPtr F;
     params_initalize();
     population_initalize(&pop);
+    F = Sort_Population(&pop);
+    crossover_population(&popc,pop);
+    mutation_population(&popm,pop);
+    pop = merge_population(pop,popc,popm);
+    input.nPop += (input.nCrossover+input.nMutation);
     F = Sort_Population(&pop);
 	return 0;
 }

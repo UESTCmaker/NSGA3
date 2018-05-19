@@ -15,10 +15,31 @@ int round_Num(float num){
     }
 }
 
-//限定范围的随机浮点数生成器
+//产生正态分布随机数
+double gaussrand(){
+    static double U, V;
+    static int phase = 0;
+    double Z;
+
+    if(phase == 0)
+    {
+         U = rand() / (RAND_MAX + 1.0);
+         V = rand() / (RAND_MAX + 1.0);
+         Z = sqrt(-2.0 * log(U))* sin(2.0 * PI * V);
+    }
+    else
+    {
+         Z = sqrt(-2.0 * log(U)) * cos(2.0 * PI * V);
+    }
+
+    phase = 1 - phase;
+    return Z;
+}
+
+//限定范围的随机均匀分布浮点数生成器
 float random_Num(float maxNum,float minNum){
 	float randnum;
-	float interval= maxNum-minNum+0.99999;
+	float interval= maxNum-minNum+1;
 	do{
         randnum=fmodf((float)rand(),interval)+minNum+0.00001;
 	}while(randnum>maxNum || randnum<minNum);
@@ -27,7 +48,7 @@ float random_Num(float maxNum,float minNum){
 
 
 //随机初始化矩阵
-Matrix random_Matrix(float VarMin, float VarMax, int row, int col){
+Matrix random_Matrix(float VarMax, float VarMin, int row, int col){
 	Matrix M1;
 	int i,j;
 	M1.Box = (float**)malloc(sizeof(float*)*row);
@@ -36,7 +57,7 @@ Matrix random_Matrix(float VarMin, float VarMax, int row, int col){
 	for(i=0;i<row;i++){
 		*(M1.Box+i)=(float*)malloc(sizeof(float)*col);
 		for(j=0;j<col;j++){
-			*(*(M1.Box+i)+j)=random_Num(VarMin,VarMax);
+			*(*(M1.Box+i)+j)=random_Num(VarMax,VarMin);
 		}
 	}
 	return M1;
@@ -239,6 +260,33 @@ Matrix* get_max_col_Matrix(Matrix a){
         *(*(b[1].Box+i))=number+1;
     }
     return b;
+}
+
+
+ListPtr get_min_col_NumList(Matrix a){
+    int i,j,Nmin=-1;
+    float M = MAX;
+    Matrix b = a;
+    ListPtr l=NULL;
+    if(b.row==1){
+        for(j=0;j<b.col;j++){
+            M = MAX;
+            Nmin=-1;
+            for(i=0;i<b.col;i++){
+                if(*(*b.Box+i)<M ){
+                    Nmin = i;
+                    M = *(*b.Box+i);
+                }
+            }
+            *(*b.Box+Nmin) = MAX;
+            add_Data(&l,Nmin);
+        }
+        return l;
+    }
+    else{
+        printf("Error: wrong matrix min rank operation.\n");
+        exit(-1);
+    }
 }
 
 Matrix* get_min_col_Matrix(Matrix a){

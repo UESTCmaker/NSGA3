@@ -10,26 +10,21 @@
 
 
 FListPtr Sort_Population(individualPtr *pop){
-    int l,i,j;
+    int l,i,j,new_member_ind,MemberToAdd;
     FListPtr F = NULL,FT = NULL;
-    ListPtr newpop=NULL,LastFront=NULL,AssociateFromLastFront=NULL;
+    ListPtr newpop=NULL,LastFront=NULL,AssociateFromLastFront=NULL,NumList=NULL,LastF;
     individualPtr p = *pop;
     Matrix d,rho,*result;
     Normalize_Population(pop);
-    printf("1\n");
     F = NonDominated_Sorting(pop);
-    printf("2\n");
-    //if(input.nPop==input.nPop_Old){return;}
+    if(input.nPop==input.nPop_Old){return F;}
     result = Associate_ReferencePoint(pop);
-    printf("3\n");
     d = *result;
     rho = *(result+1);
     printf("d:\n");
     print_Matrix(d);
     printf("rho:\n");
     print_Matrix(rho);
-    printf("f1:\n");
-    print_List(F->dataList);
     FT = F;
     while(FT){
         printf("Rank:%d  Number Set:\t",FT->Rank);
@@ -38,40 +33,53 @@ FListPtr Sort_Population(individualPtr *pop){
         FT=FT->pNext;
     }
     FT = F;
+    while(FT->pNext)FT=FT->pNext;
     while(FT){
-        printf("%d,%d\n",number_List(FT->dataList),number_List(newpop));
-        if(number_List(FT->dataList)+number_List(newpop) > input.nPop){
+        if(number_List(FT->dataList)+number_List(newpop) > input.nPop_Old){
             printf("I win!\n");
             LastFront = FT->dataList;
             break;
         }
         add_List(&newpop,FT->dataList);
-        FT=FT->pNext;
+        FT=FT->pFront;
     }
-/*
-//    printf("LastFront:\n");
-//    print_List(LastFront->data);
 
-    while(1){
-        result = get_min_col_Matrix(rho);
-        result++;
-        j = (int)**(result->Box);
-        while(LastFront){
-            i = LastFront->data;
-            if((p+i)->AssociatedRef == j){
+    printf("LastFront:\n");
+    print_List(LastFront);
+    printf("Newpop:\n");
+    print_List(newpop);
+
+    NumList = get_min_col_NumList(rho);
+    LastF = LastFront;
+    while(NumList){
+        LastF = LastFront;
+        while(LastF){
+            i = LastF->data;
+            if((p+i)->AssociatedRef == NumList->data){
                 add_Data(&AssociateFromLastFront,i);
             }
+            LastF = LastF->pNext;
         }
         if(AssociateFromLastFront==NULL){
             *(*rho.Box+j) = MAX;
             continue;
         }
 
-        if(*(*rho.Box+j)==0.0){
+        if(*(*rho.Box+NumList->data)==0.0){
 
         }
+        else{
+            new_member_ind = rand() % number_List(AssociateFromLastFront);
+        }
+        MemberToAdd = find_List(AssociateFromLastFront, new_member_ind);
+
+        delete_List(&LastFront,MemberToAdd);
+        add_List(&newpop,MemberToAdd);
+        *(*rho.Box+NumList->data)+= 1.0;
+        if(number_List(newpop)>=input.nPop_Old){break;}
+        NumList = NumList->pNext;
     }
-*/
+
 
     return F;
 }
@@ -89,24 +97,24 @@ void Normalize_Population(individualPtr *pop){
         }
         p++;
     }
-    print_Matrix(fp);
+    //print_Matrix(fp);
     fp = minus_Matrix(fp,repmat_Matrix(param.zmin,1,input.nPop));
     Perform_Scalarizing(fp);
     a = Find_HyperplaneIntercepts();
-    print_Matrix(a);
+    //print_Matrix(a);
     b = divide_Array(fp,repmat_Matrix(a,1,input.nPop));
     p = *pop;
     for(i=0;i<input.nPop;i++){
         p->NormalizedCost = get_col_Matrix(b,i+1);
         p++;
     }
-    print_Matrix(b);
+    //print_Matrix(b);
 }
 
 Matrix Find_HyperplaneIntercepts(){
     Matrix a,w;
     w = divide_Matrix(ones_Matrix(1,param.zmax.col),param.zmax);
-    print_Matrix(w);
+    //print_Matrix(w);
     a = trans_Matrix(divide_Array(ones_Matrix(w.row,w.col),w));
     return a;
 }
@@ -126,7 +134,7 @@ void Perform_Scalarizing(Matrix fp){
         zmax = param.zmax;
         smin = param.smin;
     }
-    print_Matrix(fp);
+//    print_Matrix(fp);
     for(j=0;j<input.nObj;j++){
         w = Scalarizing_Vector(input.nObj,j);
         s = zeros_Matrix(1,input.nPop);
@@ -148,8 +156,8 @@ void Perform_Scalarizing(Matrix fp){
     }
     param.zmax = zmax;
     param.smin = smin;
-    print_Matrix(zmax);
-    print_Matrix(smin);
+    //print_Matrix(zmax);
+    //print_Matrix(smin);
 }
 
 Matrix Scalarizing_Vector(int nObj, int j){
@@ -165,8 +173,7 @@ void Update_IdealPoint(individualPtr *pop){
         param.zmin = infinity_Matrix(p->Cost.row,p->Cost.col);
     }
     for(i=0;i<input.nPop;i++){
-        param.zmin = get_min_Matrix(param.zmin,p->Cost);
-        p++;
+        param.zmin = get_min_Matrix(param.zmin,(p+i)->Cost);
     }
 }
 
@@ -177,6 +184,7 @@ FListPtr NonDominated_Sorting(individualPtr *pop){
     FListPtr Q,R,F = (FListPtr)malloc(sizeof(FListBox));
     F->dataList = NULL;
     F->pNext = NULL;
+    F->pFront =NULL;
     F->Rank = 1;
     for(i=0;i<input.nPop;i++){
         m->DominatedCount=0;
@@ -206,6 +214,7 @@ FListPtr NonDominated_Sorting(individualPtr *pop){
         Q = (FListPtr)malloc(sizeof(FListBox));
         Q->dataList = NULL;
         Q->pNext = NULL;
+        Q->pFront = NULL;
         Q->Rank = k+1;
         R = F;
         while(R->Rank!=k)R=R->pNext;
@@ -227,6 +236,7 @@ FListPtr NonDominated_Sorting(individualPtr *pop){
         if(Q->dataList==NULL)break;
 
         R->pNext = Q;
+        Q->pFront = R;
         k++;
     }
     return F;
@@ -255,6 +265,7 @@ Matrix* Associate_ReferencePoint(individualPtr *pop){
             w = divide_Array(get_col_Matrix(Zr,j+1), somes_Matrix(norm_Matrix(get_col_Matrix(Zr,j+1)),Zr.row,1));
             *(*(d.Box+i)+j) = norm_Matrix(minus_Matrix(z, multply_Array(repmat_Matrix(multply_Matrix(trans_Matrix(w),z),w.row,w.col), w)));
         }
+        //print_Matrix(get_row_Matrix(d,i+1));
         x = get_min_col_Matrix(get_row_Matrix(d,i+1));
         dmin = (float)*(*(x->Box));
         x++;
@@ -262,6 +273,7 @@ Matrix* Associate_ReferencePoint(individualPtr *pop){
         p->AssociatedRef = jmin;
         p->DistanceToAssociatedRef = dmin;
         *(*(rho.Box)+jmin) = *(*(rho.Box)+jmin) + 1.0;
+        //print_Matrix(rho);
     }
     return result;
 }
