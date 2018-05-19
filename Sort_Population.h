@@ -8,6 +8,7 @@ void Perform_Scalarizing(Matrix fp);
 Matrix Scalarizing_Vector(int nObj, int j);
 void Update_IdealPoint(individualPtr *pop);
 
+void  Update_Population(individualPtr* pop, ListPtr newpop);
 FListPtr Sort_Population(individualPtr *pop);
 void Normalize_Population(individualPtr *pop);
 FListPtr NonDominated_Sorting(individualPtr *pop);

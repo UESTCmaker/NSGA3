@@ -10,11 +10,12 @@
 
 
 FListPtr Sort_Population(individualPtr *pop){
-    int l,i,j,new_member_ind,MemberToAdd;
+    int i,j,new_member_ind,MemberToAdd;
+    float M = MAX;
     FListPtr F = NULL,FT = NULL;
-    ListPtr newpop=NULL,LastFront=NULL,AssociateFromLastFront=NULL,NumList=NULL,LastF;
+    ListPtr newpop=NULL,LastFront=NULL,AssociateFromLastFront=NULL,NumList=NULL,LastF=NULL,AssociateF=NULL;
     individualPtr p = *pop;
-    Matrix d,rho,*result;
+    Matrix d,rho,ddj,*result;
     Normalize_Population(pop);
     F = NonDominated_Sorting(pop);
     if(input.nPop==input.nPop_Old){return F;}
@@ -53,37 +54,61 @@ FListPtr Sort_Population(individualPtr *pop){
     LastF = LastFront;
     while(NumList){
         LastF = LastFront;
+        printf("NumList->data:%d\n",NumList->data);
         while(LastF){
             i = LastF->data;
+            printf("LastFront data:%d\n",i);
+            printf("(p+i)->AssociatedRef:%d\n",(p+i)->AssociatedRef);
             if((p+i)->AssociatedRef == NumList->data){
                 add_Data(&AssociateFromLastFront,i);
             }
             LastF = LastF->pNext;
         }
+        print_List(AssociateFromLastFront);
         if(AssociateFromLastFront==NULL){
-            *(*rho.Box+j) = MAX;
+            *(*rho.Box+NumList->data) = MAX;
+            NumList = NumList->pNext;
             continue;
         }
-
+        new_member_ind=-1;
+        MemberToAdd=-1;
         if(*(*rho.Box+NumList->data)==0.0){
-
+            ddj = get_col_Matrix(d,NumList->data);
+            AssociateF = AssociateFromLastFront;
+            M = MAX;
+            while(AssociateF){
+                if( *(*(ddj.Box+AssociateF->data))<M ){
+                    M = *(*(ddj.Box+AssociateF->data));
+                    MemberToAdd = AssociateF->data;
+                }
+                AssociateF=AssociateF->data;
+            }
         }
         else{
-            new_member_ind = rand() % number_List(AssociateFromLastFront);
+            new_member_ind = rand() % number_List(AssociateFromLastFront)+1;
+            MemberToAdd = find_List(AssociateFromLastFront, new_member_ind);
         }
-        MemberToAdd = find_List(AssociateFromLastFront, new_member_ind);
-
+        printf("MemberToAdd:%d\n",MemberToAdd);
         delete_List(&LastFront,MemberToAdd);
         add_List(&newpop,MemberToAdd);
         *(*rho.Box+NumList->data)+= 1.0;
-        if(number_List(newpop)>=input.nPop_Old){break;}
+
         NumList = NumList->pNext;
     }
-
-
+    Update_Population(pop, newpop);
+    F = NonDominated_Sorting(pop);
     return F;
 }
 
+void  Update_Population(individualPtr* pop, ListPtr newpop){
+    individualPtr Np = (individualPtr*)malloc(sizeof(individualBox)*number_List(newpop));
+    while(newpop){
+        Np = (*pop)+newpop->data;
+        Np++;
+        newpop=newpop->pNext;
+    }
+    *pop = Np;
+}
 
 void Normalize_Population(individualPtr *pop){
     int i,j;
@@ -270,9 +295,10 @@ Matrix* Associate_ReferencePoint(individualPtr *pop){
         dmin = (float)*(*(x->Box));
         x++;
         jmin = (int)*(*(x->Box))-1;
-        p->AssociatedRef = jmin;
-        p->DistanceToAssociatedRef = dmin;
         *(*(rho.Box)+jmin) = *(*(rho.Box)+jmin) + 1.0;
+        p->AssociatedRef = jmin+1;
+        p->DistanceToAssociatedRef = dmin;
+
         //print_Matrix(rho);
     }
     return result;

@@ -14,6 +14,7 @@ typedef struct FList{
 }FListBox,*FListPtr;
 
 int find_List(ListPtr p, int num);
+void delete_List(ListPtr *l,int data);
 int number_List(ListPtr p);
 void add_Data(ListPtr* l, int data);
 void add_List(ListPtr* l, ListPtr newl);

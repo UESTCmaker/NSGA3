@@ -279,7 +279,7 @@ ListPtr get_min_col_NumList(Matrix a){
                 }
             }
             *(*b.Box+Nmin) = MAX;
-            add_Data(&l,Nmin);
+            add_Data(&l,Nmin+1);
         }
         return l;
     }

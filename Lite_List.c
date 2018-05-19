@@ -30,6 +30,25 @@ int find_List(ListPtr p, int num){
     return p->data;
 }
 
+void delete_List(ListPtr *l,int data){
+    ListPtr p = *l,q=p,r=p;
+    while(q->data!=data)q=q->pNext;
+    if(q==p){
+            p = p->pNext;
+            free(q);
+            }
+    else if(!q->pNext){
+        while(r->pNext!=q)r=r->pNext;
+        r->pNext=NULL;
+        free(q);
+    }
+    else{
+        while(r->pNext!=q)r=r->pNext;
+        r->pNext=q->pNext;
+        free(q);
+    }
+}
+
 int number_List(ListPtr p){
     int number=0;
     while(p){
