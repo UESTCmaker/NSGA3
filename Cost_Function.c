@@ -11,7 +11,7 @@ Matrix Cost_Function(Matrix a){
      Matrix temp2 = sum_row_Matrix(pow_Array(divide_Array(plus_Matrix(a,ones),somes_Matrix(sqrt(n),a.row,a.col)),2));
 
     float z1=1-exp(- **temp1.Box);
-    float z2=1+exp(- **temp2.Box);
+    float z2=2+exp(- **temp2.Box);
     //float z3=2-exp(**temp2.Box+**temp1.Box);
 
     Matrix z;

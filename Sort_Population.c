@@ -10,7 +10,7 @@
 
 
 FListPtr Sort_Population(individualPtr *pop){
-    int i,j,new_member_ind,MemberToAdd;
+    int i,j,MemberToAdd;
     float M = MAX;
     FListPtr F = NULL,FT = NULL;
     ListPtr newpop=NULL,LastFront=NULL,AssociateFromLastFront=NULL,NumList=NULL,LastF=NULL,AssociateF=NULL;
@@ -57,20 +57,20 @@ FListPtr Sort_Population(individualPtr *pop){
         printf("NumList->data:%d\n",NumList->data);
         while(LastF){
             i = LastF->data;
-            printf("LastFront data:%d\n",i);
-            printf("(p+i)->AssociatedRef:%d\n",(p+i)->AssociatedRef);
+            //printf("LastFront data:%d\n",i);
+            //printf("(p+i)->AssociatedRef:%d\n",(p+i)->AssociatedRef);
+            AssociateFromLastFront=NULL;
             if((p+i)->AssociatedRef == NumList->data){
                 add_Data(&AssociateFromLastFront,i);
             }
             LastF = LastF->pNext;
         }
-        print_List(AssociateFromLastFront);
         if(AssociateFromLastFront==NULL){
             *(*rho.Box+NumList->data) = MAX;
             NumList = NumList->pNext;
             continue;
         }
-        new_member_ind=-1;
+        print_List(AssociateFromLastFront);
         MemberToAdd=-1;
         if(*(*rho.Box+NumList->data)==0.0){
             ddj = get_col_Matrix(d,NumList->data);
@@ -81,18 +81,19 @@ FListPtr Sort_Population(individualPtr *pop){
                     M = *(*(ddj.Box+AssociateF->data));
                     MemberToAdd = AssociateF->data;
                 }
-                AssociateF=AssociateF->data;
+                AssociateF=AssociateF->pNext;
             }
         }
         else{
-            new_member_ind = rand() % number_List(AssociateFromLastFront)+1;
-            MemberToAdd = find_List(AssociateFromLastFront, new_member_ind);
+            printf("number:%d\n",number_List(AssociateFromLastFront));
+            MemberToAdd = find_List(AssociateFromLastFront, rand() % number_List(AssociateFromLastFront)+1);
         }
         printf("MemberToAdd:%d\n",MemberToAdd);
         delete_List(&LastFront,MemberToAdd);
-        add_List(&newpop,MemberToAdd);
+        print_List(LastFront);
+        add_Data(&newpop,MemberToAdd);
+        print_List(newpop);
         *(*rho.Box+NumList->data)+= 1.0;
-
         NumList = NumList->pNext;
     }
     Update_Population(pop, newpop);
@@ -122,7 +123,7 @@ void Normalize_Population(individualPtr *pop){
         }
         p++;
     }
-    //print_Matrix(fp);
+    print_Matrix(fp);
     fp = minus_Matrix(fp,repmat_Matrix(param.zmin,1,input.nPop));
     Perform_Scalarizing(fp);
     a = Find_HyperplaneIntercepts();
@@ -159,7 +160,7 @@ void Perform_Scalarizing(Matrix fp){
         zmax = param.zmax;
         smin = param.smin;
     }
-//    print_Matrix(fp);
+    print_Matrix(fp);
     for(j=0;j<input.nObj;j++){
         w = Scalarizing_Vector(input.nObj,j);
         s = zeros_Matrix(1,input.nPop);
@@ -176,12 +177,13 @@ void Perform_Scalarizing(Matrix fp){
             for(k=0;k<input.nObj;k++){
                 *(*(zmax.Box+k)+j) = *(*(fp.Box+k)+ind);
             }
+            print_Matrix(get_col_Matrix(fp,ind+1));
             *(*smin.Box+j) = sminj;
         }
     }
     param.zmax = zmax;
     param.smin = smin;
-    //print_Matrix(zmax);
+    print_Matrix(zmax);
     //print_Matrix(smin);
 }
 

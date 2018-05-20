@@ -4,6 +4,7 @@
 #include <math.h>
 #include <time.h>
 #include "Lite_Matrix.h"
+#include "Lite_List.h"
 
 //浮点数四舍五入运算
 int round_Num(float num){

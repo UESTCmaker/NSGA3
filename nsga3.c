@@ -13,8 +13,8 @@ void params_initalize(){
     input.VarMin =(float*)malloc(sizeof(float)*input.nVar);
     input.VarMax =(float*)malloc(sizeof(float)*input.nVar);
     for(i=0;i<input.nVar;i++){
-        *(input.VarMin+i)=1.0;
-        *(input.VarMax+i)=5.0;
+        *(input.VarMin+i)=0.1;
+        *(input.VarMax+i)=4.0;
     }
 
     input.nDivision = 10;
@@ -59,7 +59,6 @@ void crossover_population(individualPtr *popc, individualPtr pop){
     *popc = (individualPtr)malloc(sizeof(individualBox)*input.nCrossover);
     pc = *popc;
     p = pop;
-    srand(time(NULL));
     printf("begin crossover!!!\n");
     for(k=0;k<nCross;k++){
         i1 = rand() % input.nPop;
@@ -115,6 +114,7 @@ individualPtr merge_population(individualPtr pop, individualPtr popc, individual
         for(i=0;i<num[j];i++){
             (newpop+last+i)->Position = (popAr[j]+i)->Position;
             (newpop+last+i)->Cost = (popAr[j]+i)->Cost;
+            (newpop+last+i)->DominationSet = NULL;
         }
         last+=i;
     }
