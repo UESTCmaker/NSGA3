@@ -13,7 +13,7 @@ FListPtr Sort_Population(individualPtr *pop){
     int i,j,MemberToAdd;
     float M = MAX;
     FListPtr F = NULL,FT = NULL;
-    ListPtr newpop=NULL,LastFront=NULL,AssociateFromLastFront=NULL,NumList=NULL,LastF=NULL,AssociateF=NULL;
+    ListPtr newpop=NULL,LastFront=NULL,AssociateFromLastFront=NULL,NumList=NULL,Numl=NULL,LastF=NULL,AssociateF=NULL;
     individualPtr p = *pop;
     Matrix d,rho,ddj,*result;
     Normalize_Population(pop);
@@ -22,6 +22,7 @@ FListPtr Sort_Population(individualPtr *pop){
     result = Associate_ReferencePoint(pop);
     d = *result;
     rho = *(result+1);
+/*
     printf("d:\n");
     print_Matrix(d);
     printf("rho:\n");
@@ -33,47 +34,50 @@ FListPtr Sort_Population(individualPtr *pop){
         printf("\n");
         FT=FT->pNext;
     }
+*/
     FT = F;
     while(FT->pNext)FT=FT->pNext;
     while(FT){
         if(number_List(FT->dataList)+number_List(newpop) > input.nPop_Old){
-            printf("I win!\n");
             LastFront = FT->dataList;
             break;
         }
         add_List(&newpop,FT->dataList);
         FT=FT->pFront;
     }
-
+/*
     printf("LastFront:\n");
     print_List(LastFront);
     printf("Newpop:\n");
     print_List(newpop);
-
+*/
     NumList = get_min_col_NumList(rho);
-    LastF = LastFront;
-    while(NumList){
+    Numl = NumList;
+
+    while(1){
+        if(!Numl){
+            Numl=NumList;
+        }
         LastF = LastFront;
-        printf("NumList->data:%d\n",NumList->data);
         while(LastF){
             i = LastF->data;
             //printf("LastFront data:%d\n",i);
             //printf("(p+i)->AssociatedRef:%d\n",(p+i)->AssociatedRef);
             AssociateFromLastFront=NULL;
-            if((p+i)->AssociatedRef == NumList->data){
+            if((p+i)->AssociatedRef == Numl->data){
                 add_Data(&AssociateFromLastFront,i);
             }
             LastF = LastF->pNext;
         }
         if(AssociateFromLastFront==NULL){
-            *(*rho.Box+NumList->data) = MAX;
-            NumList = NumList->pNext;
+            *(*rho.Box+Numl->data) = MAX;
+            Numl = Numl->pNext;
             continue;
         }
-        print_List(AssociateFromLastFront);
+        //print_List(AssociateFromLastFront);
         MemberToAdd=-1;
         if(*(*rho.Box+NumList->data)==0.0){
-            ddj = get_col_Matrix(d,NumList->data);
+            ddj = get_col_Matrix(d,Numl->data);
             AssociateF = AssociateFromLastFront;
             M = MAX;
             while(AssociateF){
@@ -85,30 +89,33 @@ FListPtr Sort_Population(individualPtr *pop){
             }
         }
         else{
-            printf("number:%d\n",number_List(AssociateFromLastFront));
             MemberToAdd = find_List(AssociateFromLastFront, rand() % number_List(AssociateFromLastFront)+1);
         }
-        printf("MemberToAdd:%d\n",MemberToAdd);
         delete_List(&LastFront,MemberToAdd);
-        print_List(LastFront);
         add_Data(&newpop,MemberToAdd);
-        print_List(newpop);
         *(*rho.Box+NumList->data)+= 1.0;
-        NumList = NumList->pNext;
+        Numl = Numl->pNext;
+        if(number_List(newpop)>=input.nPop_Old){
+            break;
+        }
     }
     Update_Population(pop, newpop);
+    input.nPop = input.nPop_Old;
     F = NonDominated_Sorting(pop);
     return F;
 }
 
 void  Update_Population(individualPtr* pop, ListPtr newpop){
-    individualPtr Np = (individualPtr*)malloc(sizeof(individualBox)*number_List(newpop));
+    individualPtr Newp = (individualPtr*)malloc(sizeof(individualBox)*number_List(newpop)), Np=Newp;
+    individualPtr p;
     while(newpop){
-        Np = (*pop)+newpop->data;
+        p = (*pop)+newpop->data;
+        Np->Cost = p->Cost;
+        Np->Position = p->Position;
         Np++;
         newpop=newpop->pNext;
     }
-    *pop = Np;
+    *pop = Newp;
 }
 
 void Normalize_Population(individualPtr *pop){
@@ -123,7 +130,7 @@ void Normalize_Population(individualPtr *pop){
         }
         p++;
     }
-    print_Matrix(fp);
+    //print_Matrix(fp);
     fp = minus_Matrix(fp,repmat_Matrix(param.zmin,1,input.nPop));
     Perform_Scalarizing(fp);
     a = Find_HyperplaneIntercepts();
@@ -160,7 +167,7 @@ void Perform_Scalarizing(Matrix fp){
         zmax = param.zmax;
         smin = param.smin;
     }
-    print_Matrix(fp);
+    //print_Matrix(fp);
     for(j=0;j<input.nObj;j++){
         w = Scalarizing_Vector(input.nObj,j);
         s = zeros_Matrix(1,input.nPop);
@@ -177,13 +184,13 @@ void Perform_Scalarizing(Matrix fp){
             for(k=0;k<input.nObj;k++){
                 *(*(zmax.Box+k)+j) = *(*(fp.Box+k)+ind);
             }
-            print_Matrix(get_col_Matrix(fp,ind+1));
+            //print_Matrix(get_col_Matrix(fp,ind+1));
             *(*smin.Box+j) = sminj;
         }
     }
     param.zmax = zmax;
     param.smin = smin;
-    print_Matrix(zmax);
+    //print_Matrix(zmax);
     //print_Matrix(smin);
 }
 
