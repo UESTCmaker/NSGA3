@@ -21,8 +21,7 @@ int main(){
     for(i=0;i<input.MaxIt;i++){
         crossover_population(&popc,pop);
         mutation_population(&popm,pop);
-        pop = merge_population(pop,popc,popm);
-        input.nPop += (input.nCrossover+input.nMutation);
+        merge_population(&pop,popc,popm);
         F = Sort_Population(&pop);
         FT = F;
 /*        while(FT->pNext)FT=FT->pNext;
@@ -35,7 +34,8 @@ int main(){
         }
         Sleep(2000);
 */
-        system("cls");
+ /*       system("cls");
+        printf("Generation No.%d \n",i+1);
         while(FT){
             while(FT->dataList){
                     print_Matrix( (pop+FT->dataList->data)->Cost);
@@ -43,7 +43,7 @@ int main(){
                 }
             FT = FT->pNext;
         }
-    Sleep(2000);
+    Sleep(2000);*/
     }
 
 

@@ -13,8 +13,8 @@ void params_initalize(){
     input.VarMin =(float*)malloc(sizeof(float)*input.nVar);
     input.VarMax =(float*)malloc(sizeof(float)*input.nVar);
     for(i=0;i<input.nVar;i++){
-        *(input.VarMin+i)=0.0;
-        *(input.VarMax+i)=4.0;
+        *(input.VarMin+i)=0.1;
+        *(input.VarMax+i)=2.0;
     }
 
     input.nDivision = 10;
@@ -59,7 +59,7 @@ void crossover_population(individualPtr *popc, individualPtr pop){
     *popc = (individualPtr)malloc(sizeof(individualBox)*input.nCrossover);
     pc = *popc;
     p = pop;
-    //printf("begin crossover!!!\n");
+    printf("begin crossover!!!\n");
     for(k=0;k<nCross;k++){
         i1 = rand() % input.nPop;
         do{
@@ -83,7 +83,7 @@ void mutation_population(individualPtr *popm, individualPtr pop){
     nMu = (int)ceil(input.mu * input.nVar);
     *popm = (individualPtr)malloc(sizeof(individualBox)*input.nMutation);
     pm = *popm;
-    //printf("begin mutation!!!\n");
+    printf("begin mutation!!!\n");
     for(k=0;k<input.nMutation;k++){
         i = rand() % input.nPop;
         p = pop + i;
@@ -104,12 +104,12 @@ void mutation_population(individualPtr *popm, individualPtr pop){
     }
 }
 
-individualPtr merge_population(individualPtr pop, individualPtr popc, individualPtr popm){
-    individualPtr newpop,popAr[3]={pop,popc,popm};
+void merge_population(individualPtr *pop, individualPtr *popc, individualPtr *popm){
+    individualPtr p,q,newpop,popAr[3]={*pop,*popc,*popm};
     int j,i,last=0,nNewPop = input.nPop + input.nCrossover + input.nMutation;
     int num[3]={input.nPop,input.nCrossover,input.nMutation};
     newpop = (individualPtr)malloc(sizeof(individualBox)*nNewPop);
-    //printf("begin merge!!!\n");
+    printf("begin merge!!!  number:%d\n",nNewPop);
     for(j=0;j<3;j++){
         for(i=0;i<num[j];i++){
             (newpop+last+i)->Position = (popAr[j]+i)->Position;
@@ -118,7 +118,29 @@ individualPtr merge_population(individualPtr pop, individualPtr popc, individual
         }
         last+=i;
     }
-    return newpop;
+    input.nPop += (input.nCrossover+input.nMutation);
+    free(*pop);
+    free(*popc);
+    free(*popm);
+    *pop = newpop;
+
+    i=0;
+    //p = newpop;
+    while(newpop){
+        i++;
+        newpop++;
+    }
+    printf("newpop number after merge:%d\n",i);
+
+
+    p=*pop;
+    q = p;
+    i=0;
+    while(q){
+        i++;
+        q++;
+    }
+    printf("pop number after merge:%d\n",i);
 }
 
 

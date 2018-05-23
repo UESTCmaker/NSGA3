@@ -27,13 +27,6 @@ FListPtr Sort_Population(individualPtr *pop){
     print_Matrix(d);
     printf("rho:\n");
     print_Matrix(rho);
-    FT = F;
-    while(FT){
-        printf("Rank:%d  Number Set:\t",FT->Rank);
-        print_List(FT->dataList);
-        printf("\n");
-        FT=FT->pNext;
-    }
 */
     FT = F;
     while(FT->pNext)FT=FT->pNext;
@@ -45,76 +38,87 @@ FListPtr Sort_Population(individualPtr *pop){
         add_List(&newpop,FT->dataList);
         FT=FT->pFront;
     }
-/*
+
     printf("LastFront:\n");
     print_List(LastFront);
     printf("Newpop:\n");
     print_List(newpop);
-*/
-    NumList = get_min_col_NumList(rho);
-    Numl = NumList;
 
-    while(1){
-        if(!Numl){
-            Numl=NumList;
-        }
-        LastF = LastFront;
-        while(LastF){
-            i = LastF->data;
-            //printf("LastFront data:%d\n",i);
-            //printf("(p+i)->AssociatedRef:%d\n",(p+i)->AssociatedRef);
-            AssociateFromLastFront=NULL;
-            if((p+i)->AssociatedRef == Numl->data){
-                add_Data(&AssociateFromLastFront,i);
+    if(number_List(newpop)<input.nPop_Old){
+        NumList = get_min_col_NumList(rho);
+        Numl = NumList;
+
+        while(1){
+            if(!Numl){
+                Numl=NumList;
             }
-            LastF = LastF->pNext;
-        }
-        if(AssociateFromLastFront==NULL){
-            *(*rho.Box+Numl->data) = MAX;
-            Numl = Numl->pNext;
-            continue;
-        }
-        //print_List(AssociateFromLastFront);
-        MemberToAdd=-1;
-        if(*(*rho.Box+NumList->data)==0.0){
-            ddj = get_col_Matrix(d,Numl->data);
-            AssociateF = AssociateFromLastFront;
-            M = MAX;
-            while(AssociateF){
-                if( *(*(ddj.Box+AssociateF->data))<M ){
-                    M = *(*(ddj.Box+AssociateF->data));
-                    MemberToAdd = AssociateF->data;
+            LastF = LastFront;
+            while(LastF){
+                i = LastF->data;
+                //printf("LastFront data:%d\n",i);
+                //printf("(p+i)->AssociatedRef:%d\n",(p+i)->AssociatedRef);
+                AssociateFromLastFront=NULL;
+                if((p+i)->AssociatedRef == Numl->data){
+                    add_Data(&AssociateFromLastFront,i);
                 }
-                AssociateF=AssociateF->pNext;
+                LastF = LastF->pNext;
             }
-        }
-        else{
-            MemberToAdd = find_List(AssociateFromLastFront, rand() % number_List(AssociateFromLastFront)+1);
-        }
-        delete_List(&LastFront,MemberToAdd);
-        add_Data(&newpop,MemberToAdd);
-        *(*rho.Box+NumList->data)+= 1.0;
-        Numl = Numl->pNext;
-        if(number_List(newpop)>=input.nPop_Old){
-            break;
+            if(AssociateFromLastFront==NULL){
+                *(*rho.Box+Numl->data) = MAX;
+                Numl = Numl->pNext;
+                continue;
+            }
+            //print_List(AssociateFromLastFront);
+            MemberToAdd=-1;
+            if(*(*rho.Box+NumList->data)==0.0){
+                ddj = get_col_Matrix(d,Numl->data);
+                AssociateF = AssociateFromLastFront;
+                M = MAX;
+                while(AssociateF){
+                    if( *(*(ddj.Box+AssociateF->data))<M ){
+                        M = *(*(ddj.Box+AssociateF->data));
+                        MemberToAdd = AssociateF->data;
+                    }
+                    AssociateF=AssociateF->pNext;
+                }
+            }
+            else{
+                MemberToAdd = find_List(AssociateFromLastFront, rand() % number_List(AssociateFromLastFront)+1);
+            }
+            delete_List(&LastFront,MemberToAdd);
+            add_Data(&newpop,MemberToAdd);
+            *(*rho.Box+NumList->data)+= 1.0;
+            Numl = Numl->pNext;
+            if(number_List(newpop)>=input.nPop_Old){
+                break;
+            }
         }
     }
+
+    printf("newpop new\n");
+    print_List(newpop);
     Update_Population(pop, newpop);
+    printf("finish updating\n");
     input.nPop = input.nPop_Old;
     F = NonDominated_Sorting(pop);
+    printf("finish sorting\n");
     return F;
 }
 
 void  Update_Population(individualPtr* pop, ListPtr newpop){
     individualPtr Newp = (individualPtr*)malloc(sizeof(individualBox)*number_List(newpop)), Np=Newp;
     individualPtr p;
+    printf("begin updating\n");
     while(newpop){
         p = (*pop)+newpop->data;
         Np->Cost = p->Cost;
         Np->Position = p->Position;
+        Np->DominatedCount=0;
+        Np->DominationSet=NULL;
         Np++;
         newpop=newpop->pNext;
     }
+    free(*pop);
     *pop = Newp;
 }
 
@@ -215,7 +219,9 @@ FListPtr NonDominated_Sorting(individualPtr *pop){
     int i,j,k;
     individualPtr p,q,m = *pop;
     ListPtr a,b;
-    FListPtr Q,R,F = (FListPtr)malloc(sizeof(FListBox));
+    FListPtr Q,R,F;
+    F= (FListPtr)malloc(sizeof(FListBox));
+    if(F==NULL){printf("malloc failed\.n");exit(-1);}
     F->dataList = NULL;
     F->pNext = NULL;
     F->pFront =NULL;
@@ -243,9 +249,11 @@ FListPtr NonDominated_Sorting(individualPtr *pop){
             p->Rank=1;
         }
     }
+    print_List(F->dataList);
     k=1;
     while(1){
         Q = (FListPtr)malloc(sizeof(FListBox));
+        if(Q==NULL){printf("Q malloc failed.\n");exit(-1);}
         Q->dataList = NULL;
         Q->pNext = NULL;
         Q->pFront = NULL;
@@ -268,7 +276,7 @@ FListPtr NonDominated_Sorting(individualPtr *pop){
             a=a->pNext;
         }
         if(Q->dataList==NULL)break;
-
+        print_List(Q->dataList);
         R->pNext = Q;
         Q->pFront = R;
         k++;
