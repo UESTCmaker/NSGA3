@@ -28,7 +28,7 @@
 	"Lite_Matrix.h"
 	"Lite_List.h"
 
-1527062064 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\main.c
+1527083174 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\main.c
 	<stdio.h>
 	<stdlib.h>
 	<unistd.h>
@@ -52,7 +52,7 @@
 	"Lite_List.h"
 	"Lite_Matrix.h"
 
-1527062442 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\nsga3.c
+1527083139 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\nsga3.c
 	<stdio.h>
 	<time.h>
 	<math.h>
@@ -67,7 +67,7 @@
 	"Reference_Points.h"
 	"nsga3.h"
 
-1527062099 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\sort_population.c
+1527083861 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\sort_population.c
 	<stdio.h>
 	<malloc.h>
 	<ctype.h>

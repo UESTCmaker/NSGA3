@@ -32,6 +32,7 @@ FListPtr Sort_Population(individualPtr *pop){
     while(FT->pNext)FT=FT->pNext;
     while(FT){
         if(number_List(FT->dataList)+number_List(newpop) > input.nPop_Old){
+            printf("GO GO GO\n");
             LastFront = FT->dataList;
             break;
         }
@@ -99,7 +100,6 @@ FListPtr Sort_Population(individualPtr *pop){
     print_List(newpop);
     Update_Population(pop, newpop);
     printf("finish updating\n");
-    input.nPop = input.nPop_Old;
     F = NonDominated_Sorting(pop);
     printf("finish sorting\n");
     return F;
@@ -120,6 +120,7 @@ void  Update_Population(individualPtr* pop, ListPtr newpop){
     }
     free(*pop);
     *pop = Newp;
+    input.nPop = input.nPop_Old;
 }
 
 void Normalize_Population(individualPtr *pop){
@@ -249,7 +250,6 @@ FListPtr NonDominated_Sorting(individualPtr *pop){
             p->Rank=1;
         }
     }
-    print_List(F->dataList);
     k=1;
     while(1){
         Q = (FListPtr)malloc(sizeof(FListBox));
@@ -276,7 +276,6 @@ FListPtr NonDominated_Sorting(individualPtr *pop){
             a=a->pNext;
         }
         if(Q->dataList==NULL)break;
-        print_List(Q->dataList);
         R->pNext = Q;
         Q->pFront = R;
         k++;

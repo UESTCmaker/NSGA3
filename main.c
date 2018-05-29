@@ -19,9 +19,11 @@ int main(){
     population_initalize(&pop);
     F = Sort_Population(&pop);
     for(i=0;i<input.MaxIt;i++){
+        popm=NULL;
+        popc=NULL;
         crossover_population(&popc,pop);
         mutation_population(&popm,pop);
-        merge_population(&pop,popc,popm);
+        merge_population(&pop,&popc,&popm);
         F = Sort_Population(&pop);
         FT = F;
 /*        while(FT->pNext)FT=FT->pNext;

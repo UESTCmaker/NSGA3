@@ -109,7 +109,7 @@ void merge_population(individualPtr *pop, individualPtr *popc, individualPtr *po
     int j,i,last=0,nNewPop = input.nPop + input.nCrossover + input.nMutation;
     int num[3]={input.nPop,input.nCrossover,input.nMutation};
     newpop = (individualPtr)malloc(sizeof(individualBox)*nNewPop);
-    printf("begin merge!!!  number:%d\n",nNewPop);
+    printf("begin merge!!!\n");
     for(j=0;j<3;j++){
         for(i=0;i<num[j];i++){
             (newpop+last+i)->Position = (popAr[j]+i)->Position;
@@ -123,24 +123,6 @@ void merge_population(individualPtr *pop, individualPtr *popc, individualPtr *po
     free(*popc);
     free(*popm);
     *pop = newpop;
-
-    i=0;
-    //p = newpop;
-    while(newpop){
-        i++;
-        newpop++;
-    }
-    printf("newpop number after merge:%d\n",i);
-
-
-    p=*pop;
-    q = p;
-    i=0;
-    while(q){
-        i++;
-        q++;
-    }
-    printf("pop number after merge:%d\n",i);
 }
 
 
