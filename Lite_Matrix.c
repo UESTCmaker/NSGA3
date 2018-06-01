@@ -40,9 +40,9 @@ double gaussrand(){
 //限定范围的随机均匀分布浮点数生成器
 float random_Num(float maxNum,float minNum){
 	float randnum;
-	float interval= maxNum-minNum+1;
+	float interval= maxNum-minNum;
 	do{
-        randnum=fmodf((float)rand(),interval)+minNum+0.00001;
+        randnum=(float)rand()/(float)RAND_MAX*interval+minNum;
 	}while(randnum>maxNum || randnum<minNum);
 	return randnum;
 }

@@ -11,43 +11,46 @@
 #include "Lite_List.h"
 #include "nsga3.h"
 
-int main(){
+int main()
+{
+
     int i;
     individualPtr pop=NULL,popm=NULL,popc=NULL;
     FListPtr F,FT;
+    ListPtr pFT;
     params_initalize();
     population_initalize(&pop);
     F = Sort_Population(&pop);
-    for(i=0;i<input.MaxIt;i++){
+    for(i=0; i<input.MaxIt; i++)
+    {
+        system("cls");
+        printf("Generation No.%d \n",i+1);
         popm=NULL;
         popc=NULL;
         crossover_population(&popc,pop);
         mutation_population(&popm,pop);
-        merge_population(&pop,&popc,&popm);
+        pop = merge_population(&pop,&popc,&popm);
         F = Sort_Population(&pop);
+
         FT = F;
-/*        while(FT->pNext)FT=FT->pNext;
-        while(FT){
-            while(FT->dataList){
-                print_Matrix( (pop+FT->dataList->data)->Cost);
-                FT->dataList = FT->dataList->pNext;
+        while(FT)
+        {
+            //printf("Rank No.%d:",FT->Rank);
+            //printf("\n");
+            pFT = FT->dataList;
+            while(pFT)
+            {
+                //printf("%d\t",pFT->data);
+                print_Matrix(trans_Matrix((pop+pFT->data)->Cost));
+                pFT = pFT->pNext;
             }
-            FT=FT->pFront;
-        }
-        Sleep(2000);
-*/
- /*       system("cls");
-        printf("Generation No.%d \n",i+1);
-        while(FT){
-            while(FT->dataList){
-                    print_Matrix( (pop+FT->dataList->data)->Cost);
-                    FT->dataList = FT->dataList->pNext;
-                }
+            //printf("\n");
             FT = FT->pNext;
         }
-    Sleep(2000);*/
+        //Sleep(2000);
+
     }
-
-
-	return 0;
+    return 0;
 }
+
+

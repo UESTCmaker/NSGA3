@@ -7,11 +7,11 @@
 Matrix Cost_Function(Matrix a){
      int n = element_Num(a);
      Matrix ones = ones_Matrix(a.row,a.col);
-     Matrix temp1 = sum_row_Matrix(pow_Array(divide_Array(minus_Matrix(a,ones),somes_Matrix(sqrt(n),a.row,a.col)),2));
-     Matrix temp2 = sum_row_Matrix(pow_Array(divide_Array(plus_Matrix(a,ones),somes_Matrix(sqrt(n),a.row,a.col)),2));
+     Matrix temp1 = sum_row_Matrix(pow_Array(minus_Matrix(a,somes_Matrix(1.0/sqrt(n),a.row,a.col)),2));
+     Matrix temp2 = sum_row_Matrix(pow_Array(plus_Matrix(a,somes_Matrix(1.0/sqrt(n),a.row,a.col)),2));
 
-    float z1=1-exp(- **temp1.Box);
-    float z2=2+exp(- **temp2.Box);
+    float z1=1.0-exp(- **temp1.Box);
+    float z2=1.0-exp(- **temp2.Box);
     //float z3=2-exp(**temp2.Box+**temp1.Box);
 
     Matrix z;

@@ -10,7 +10,7 @@ void add_Data(ListPtr* head, int data){
         (*head)->pNext = NULL;
     }
     else{
-        while(p->pNext)p=p->pNext;
+        while(p->pNext!=NULL){p=p->pNext;}
         q = (ListPtr)malloc(sizeof(ListBox));
         q->data = data;
         q->pNext = NULL;

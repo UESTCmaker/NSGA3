@@ -51,5 +51,5 @@ void params_initalize();
 void population_initalize(individualPtr *pop);
 void crossover_population(individualPtr *popc, individualPtr pop);
 void mutation_population(individualPtr *popm, individualPtr pop);
-void merge_population(individualPtr *pop, individualPtr *popc, individualPtr *popm);
+individualPtr merge_population(individualPtr *pop, individualPtr *popc, individualPtr *popm);
 #endif // NSGA3_H_INCLUDED
