@@ -10,7 +10,6 @@ void params_initalize()
 {
     int i;
     input.nVar = 5;
-    input.nObj = 2;
     input.VarMin =(float*)malloc(sizeof(float)*input.nVar);
     input.VarMax =(float*)malloc(sizeof(float)*input.nVar);
     for(i=0; i<input.nVar; i++)
@@ -18,11 +17,10 @@ void params_initalize()
         *(input.VarMin+i)=-1.0;
         *(input.VarMax+i)=1.0;
     }
-
+    input.nObj = element_Num(Cost_Function(random_Matrix(*(input.VarMax),*(input.VarMin),1,input.nVar)));
     input.nDivision = 10;
-
-    input.MaxIt = 10;
-    input.nPop_Old = 10;
+    input.MaxIt = 30;
+    input.nPop_Old = 100;
     input.nPop = input.nPop_Old;
     input.pCrossover = 0.5;
     input.nCrossover = 2*round_Num(input.pCrossover*input.nPop/2);
@@ -42,7 +40,6 @@ void population_initalize(individualPtr *pop)
     individualPtr p;
     *pop = (individualPtr)malloc(sizeof(individualBox)*input.nPop);
     p = *pop;
-    srand(time(NULL));
     for(i = 0; i<input.nPop; i++)
     {
         p->Position = zeros_Matrix(1, input.nVar);
@@ -67,13 +64,13 @@ void crossover_population(individualPtr *popc, individualPtr pop)
     *popc = (individualPtr)malloc(sizeof(individualBox)*input.nCrossover);
     pc = *popc;
     p = pop;
-    printf("begin crossover!!!\n");
+    //printf("begin crossover!!!\n");
     for(k=0; k<nCross; k++)
     {
-        i1 = rand() % input.nPop;
+        i1 = round_Num(random_Num(input.nPop-1,0));
         do
         {
-            i2 = rand() % input.nPop;
+            i2 = round_Num(random_Num(input.nPop-1,0));
         }
         while(i1 == i2);
         p1 = p + i1;
@@ -95,10 +92,10 @@ void mutation_population(individualPtr *popm, individualPtr pop)
     nMu = (int)ceil(input.mu * input.nVar);
     *popm = (individualPtr)malloc(sizeof(individualBox)*input.nMutation);
     pm = *popm;
-    printf("begin mutation!!!\n");
+    //printf("begin mutation!!!\n");
     for(k=0; k<input.nMutation; k++)
     {
-        i = rand() % input.nPop;
+        i = round_Num(random_Num(input.nPop-1,0));
         p = pop + i;
         for(j=0; j<input.nVar; j++)
         {
@@ -107,10 +104,10 @@ void mutation_population(individualPtr *popm, individualPtr pop)
         pm->Position = repmat_Matrix(p->Position,1,1);
         for(j=0; j<nMu; j++)
         {
-            serial = rand() % input.nVar;
+            serial = round_Num(random_Num(input.nVar-1,0));
             while(flag[serial]!=0)
             {
-                serial = rand() % input.nVar;
+                serial = round_Num(random_Num(input.nVar-1,0));
             }
             flag[serial]=1;
             *(*((pm->Position).Box)+serial) += input.sigma * (double)gaussrand();
@@ -126,7 +123,7 @@ individualPtr merge_population(individualPtr *pop, individualPtr *popc, individu
     int j,i,last=0,nNewPop = input.nPop + input.nCrossover + input.nMutation;
     int num[3]= {input.nPop,input.nCrossover,input.nMutation};
     newpop = (individualPtr)malloc(sizeof(individualBox)*nNewPop);
-    printf("begin merge!!!\n");
+    //printf("begin merge!!!\n");
     for(j=0; j<3; j++)
     {
         for(i=0; i<num[j]; i++)

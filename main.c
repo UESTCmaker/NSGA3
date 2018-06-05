@@ -13,16 +13,17 @@
 
 int main()
 {
-
     int i;
     individualPtr pop=NULL,popm=NULL,popc=NULL;
     FListPtr F,FT;
     ListPtr pFT;
+    srand(time(NULL));
     params_initalize();
     population_initalize(&pop);
     F = Sort_Population(&pop);
     for(i=0; i<input.MaxIt; i++)
     {
+        srand(time(NULL));
         system("cls");
         printf("Generation No.%d \n",i+1);
         popm=NULL;
@@ -31,25 +32,16 @@ int main()
         mutation_population(&popm,pop);
         pop = merge_population(&pop,&popc,&popm);
         F = Sort_Population(&pop);
-
-        FT = F;
-        while(FT)
-        {
-            //printf("Rank No.%d:",FT->Rank);
-            //printf("\n");
-            pFT = FT->dataList;
-            while(pFT)
-            {
-                //printf("%d\t",pFT->data);
-                print_Matrix(trans_Matrix((pop+pFT->data)->Cost));
-                pFT = pFT->pNext;
-            }
-            //printf("\n");
-            FT = FT->pNext;
-        }
-        //Sleep(2000);
-
     }
+    FT = F;
+    pFT = FT->dataList;
+    while(pFT)
+    {
+        //printf("%d\t",pFT->data);
+        print_Matrix(trans_Matrix((pop+pFT->data)->Cost));
+        pFT = pFT->pNext;
+    }
+
     return 0;
 }
 

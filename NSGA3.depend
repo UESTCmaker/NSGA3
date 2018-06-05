@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1527830250 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\cost_function.c
+1528031644 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\cost_function.c
 	<stdio.h>
 	<malloc.h>
 	<math.h>
@@ -14,12 +14,12 @@
 
 1526740686 c:\users\dream maker\documents\biyesheji\nsga3\nsga3\lite_list.h
 
-1527823421 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\lite_list.c
+1527845582 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\lite_list.c
 	<stdio.h>
 	<malloc.h>
 	"Lite_List.h"
 
-1527831279 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\lite_matrix.c
+1527845590 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\lite_matrix.c
 	<stdio.h>
 	<malloc.h>
 	<stdlib.h>
@@ -28,7 +28,7 @@
 	"Lite_Matrix.h"
 	"Lite_List.h"
 
-1527833999 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\main.c
+1527992975 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\main.c
 	<stdio.h>
 	<stdlib.h>
 	<unistd.h>
@@ -52,7 +52,7 @@
 	"Lite_List.h"
 	"Lite_Matrix.h"
 
-1527834363 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\nsga3.c
+1528031640 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\nsga3.c
 	<stdio.h>
 	<time.h>
 	<math.h>
@@ -61,13 +61,13 @@
 	"Reference_Points.h"
 	"nsga3.h"
 
-1525251450 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\reference_points.c
+1527845603 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\reference_points.c
 	<stdio.h>
 	<math.h>
 	"Reference_Points.h"
 	"nsga3.h"
 
-1527832823 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\sort_population.c
+1527845553 source:c:\users\dream maker\documents\biyesheji\nsga3\nsga3\sort_population.c
 	<stdio.h>
 	<malloc.h>
 	<ctype.h>

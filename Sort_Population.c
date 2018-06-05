@@ -19,21 +19,21 @@ FListPtr Sort_Population(individualPtr *pop)
     Matrix d,rho,ddj,*result;
     Normalize_Population(pop);
     F = NonDominated_Sorting(pop);
-/*
-    FT = F;
-    while(FT)
-    {
-        printf("Rank No.%d:",FT->Rank);
-        pFT = FT->dataList;
-        while(pFT)
+    /*
+        FT = F;
+        while(FT)
         {
-            printf("%d\t",pFT->data);
-            pFT = pFT->pNext;
+            printf("Rank No.%d:",FT->Rank);
+            pFT = FT->dataList;
+            while(pFT)
+            {
+                printf("%d\t",pFT->data);
+                pFT = pFT->pNext;
+            }
+            printf("\n");
+            FT = FT->pNext;
         }
-        printf("\n");
-        FT = FT->pNext;
-    }
-*/
+    */
     if(input.nPop==input.nPop_Old)
     {
         return F;
@@ -53,12 +53,12 @@ FListPtr Sort_Population(individualPtr *pop)
         add_List(&newpop,FT->dataList);
         FT=FT->pNext;
     }
-/*
-    printf("LastFront:\n");
-    print_List(LastFront);
-    printf("Newpop:\n");
-    print_List(newpop);
-*/
+    /*
+        printf("LastFront:\n");
+        print_List(LastFront);
+        printf("Newpop:\n");
+        print_List(newpop);
+    */
     NumList = get_min_col_NumList(rho);
     Numl = NumList;
 
@@ -106,7 +106,7 @@ FListPtr Sort_Population(individualPtr *pop)
         }
         else
         {
-            MemberToAdd = find_List(AssociateFromLastFront, rand() % number_List(AssociateFromLastFront)+1);
+            MemberToAdd = find_List(AssociateFromLastFront, round_Num(random_Num(number_List(AssociateFromLastFront),1)));
         }
         delete_List(&LastFront,MemberToAdd);
         add_Data(&newpop,MemberToAdd);
@@ -302,15 +302,15 @@ FListPtr NonDominated_Sorting(individualPtr *pop)
             p->Rank=1;
         }
     }
-/*
-    printf("F1\n");
-    print_List(F->dataList);
+    /*
+        printf("F1\n");
+        print_List(F->dataList);
 
-    for(i=0; i<input.nPop; i++)
-    {
-        printf( "No.%d ind count %d\n",i,(m+i)->DominatedCount);
-    }
-*/
+        for(i=0; i<input.nPop; i++)
+        {
+            printf( "No.%d ind count %d\n",i,(m+i)->DominatedCount);
+        }
+    */
     k=1;
     while(1)
     {
@@ -344,7 +344,11 @@ FListPtr NonDominated_Sorting(individualPtr *pop)
             }
             a=a->pNext;
         }
-        if(Q->dataList==NULL){free(Q);break;}
+        if(Q->dataList==NULL)
+        {
+            free(Q);
+            break;
+        }
         R->pNext = Q;
         Q->pFront = R;
         k++;
